@@ -4,7 +4,7 @@ module.exports = {
   // 接口地址配置
   BASE_URL: '"http://xxxxx"',
   //ws 服务的地址配置
-  WS_BASE_URL:'"ws://xxxx"'
+  WS_BASE_URL:'"ws://xxxx"',
   //cookie 的过期时间
   COOKIE_EXPIRED: 14,
   //cookie 域名
