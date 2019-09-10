@@ -1,0 +1,362 @@
+<template>
+    <div>
+      <el-tabs v-model="tabActive" class="project-wrap">
+        <el-tab-pane label="项目" name="1">
+          <div class="project-box" >
+             <div class="item add" @click="showDialog(true)" v-if="isAdmin">
+             </div>
+             <div class="item" v-for="item in projectList" :key="item.id">
+                <router-link  v-if="isSelfProject(item.user)" :to="{name:'dashboard',params:{projectId: item.id}}">{{item.name}}</router-link>
+                <a v-else @click="noRight">{{item.name}}</a>
+								<img class="p-logo" v-if=item.logo v-bind:src=item.logo @click="logo_image(item)"/>
+                <ul class="opts" v-if="isAdmin">
+                  <li class="edit-btn" title="编辑" @click="editFun(item)"><i class="el-icon-edit"></i></li>
+                  <li class="delete-btn" title="删除" @click="deleteFun(item)"><i class="el-icon-delete"></i></li>
+                </ul>
+             </div>
+          </div>
+        </el-tab-pane>
+      </el-tabs>
+      <el-dialog
+        title="项目绑定用户"
+        :visible.sync="projectBindUserVisible"
+        width="600px"
+        @close="closeBindUserDialog" :close-on-click-modal="false">
+        <el-form :model="projectBindUserForm" ref="projectBindUserForm" labelWidth="100px">
+          <el-form-item label="项目名" prop="name">
+            <span>{{projectBindUserForm.name}}</span>
+          </el-form-item>
+					
+          <el-form-item label="用户" prop="userids">
+            <el-select v-model="projectBindUserForm.userids" clearable multiple filterable :style="{width: '400px'}">
+              <el-option
+                v-for="item in userList"
+                :key="item.userid"
+                :label="item.nickname"
+                :value="item.userid">
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="projectBindUserVisible = false">取 消</el-button>
+          <el-button type="primary" @click="projectBindUser">确 定</el-button>
+        </span>
+      </el-dialog>
+      <el-dialog
+        title="提示"
+        :visible.sync="dialogVisible"
+        width="400px" :close-on-click-modal="false">
+        <span>您确定要删除（ {{projectInfo.name}} ）项目？</span>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="delProject">确 定</el-button>
+        </span>
+      </el-dialog>
+      <editDialog :isShow ="editDialogVisible" :projectId="projectId" @refreshData="refreshDataFun" @close="showDialog(false)"></editDialog>
+    </div>
+</template>
+<script>
+import editDialog from './editDialog.vue'
+import projectApi from '@/api/project.js'
+import userApi from '@/api/user.js'
+  export default{
+    name: 'Center',
+    data() {
+      return {
+        loading : true,
+        tabActive:'1',
+        filterValue:'',
+        dialogVisible: false,
+        editDialogVisible: false,
+        projectList: [],
+        projectInfo: {},
+        projectId: '',
+        userList: [],
+        projectBindUserVisible: false,
+        projectBindUserForm: {
+          id: '',
+          name: '',
+          userids: []
+        },
+      }
+    },
+    components:{
+      editDialog
+    },
+    computed:{
+      userId(){
+        return this.$store.state.login.userid
+      },
+      isAdmin(){
+        return this.$store.getters.isAdmin
+      }
+    },
+    methods:{
+			logo_image(item){
+				if(this.isSelfProject(item.user)){
+					this.$router.push({
+					  name: 'dashboard',
+					  params: {
+					    projectId: item.id
+					  }
+					})	
+				}else{
+					this.noRight()
+				}
+			},
+      isSelfProject(user) {
+        let result = false
+        if(this.isAdmin){
+          result = true
+        }
+        if(user.length>0){
+          user.forEach(item=>{
+            if(item.id == this.userId){
+              result = true
+            }
+          })
+        }
+        return result
+      },
+      projectBindUser () {
+        projectApi.projectBindUser(this.projectBindUserForm.id, this.projectBindUserForm.userids).then(res => {
+          this.$message.success('操作成功')
+          this.projectBindUserVisible = false
+          this.getProjectData()
+        }).catch(err => {
+          this.$message.error(`操作失败：${err.message}`)
+        })
+      },
+      openBindUserDialog (row) {
+        this.projectBindUserVisible = true
+        this.projectBindUserForm.id = row.id
+        this.projectBindUserForm.name = row.name
+        this.projectBindUserForm.userids = row.user.map(i => i.id)
+      },
+      closeBindUserDialog () {
+        this.projectBindUserForm.id = ''
+        this.projectBindUserForm.name = ''
+        this.projectBindUserForm.userids = []
+      },
+      getUserList() {
+        this.loading = true
+        userApi.getUserList().then(res => {
+          this.loading = false
+          this.userList = res.data.data
+        }).catch(err => {
+          this.loading = false
+        })
+      },
+      getProjectData(){
+        projectApi.getProjectList().then(res => {
+          this.projectList = res.data.data
+          console.log(this.projectList)
+        }).catch(err => {
+          console.log(err)
+        })
+      },
+      openProjectBindUserDialog () {
+
+      },
+      editFun(item){
+        this.projectId = item.id;
+        this.editDialogVisible = true
+      },
+      deleteFun(item) {
+        this.dialogVisible = true
+        this.projectInfo = item
+      },
+      delProject() {
+        projectApi.deleteProject({id: this.projectInfo.id}).then(res => {
+          this.dialogVisible = false
+          this.$message({
+             message: '项目删除成功！',
+             type: 'success'
+          })
+          this.getProjectData()
+        })
+      },
+      refreshDataFun(){
+        this.editDialogVisible  = false;
+        this.projectId = ''
+        this.getProjectData();
+      },
+      showDialog (val){
+        if(!val){
+          this.projectId = ''
+        }
+        this.editDialogVisible = val
+      },
+      noRight(){
+        this.$message({
+          message: '对不起，您没有权限！',
+          type: 'warning'
+        });
+      },
+    },
+    created() {
+      this.getProjectData()
+      this.getUserList()
+    }
+  }
+</script>
+<style lang="scss" scoped>
+.top-sidebar {
+  margin: 20px auto 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  width: 300px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  li {
+    flex: 1;
+    list-style: none;
+    cursor: pointer;
+    border-left: 1px solid #ccc;
+    text-align: center;
+    &:first-child {
+      border-left: none;
+    }
+    span {
+      margin-left: 5px;
+    }
+    &.router-link-exact-active {
+      color: #317ffe;
+    }
+  }
+}
+.q-crumb{
+  padding:0 0 10px 0;
+  display:flex;
+  align-items:center;
+  border-bottom:1px solid #ddd;
+  margin-bottom:20px;
+  .el-icon-tickets{
+    display:block;
+    margin-right:5px;
+    color:#33c0fb;
+    font-size:18px;
+  }
+  .el-breadcrumb{
+    font-size:16px;
+  }
+}
+.q-opt{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+  .q-search{
+    width:200px;
+  }
+}
+.permission-unit{
+  display:inline-block;
+  padding:0 10px;
+  margin:0 5px;
+  background-color:#b9dbff;
+  border-radius:3px;
+  color:#fff;
+}
+.project-wrap{
+  max-width:1400px;
+  margin:auto;
+  .el-tabs__item{
+    font-size:18px;
+  }
+
+}
+.project-box{
+  display:flex;
+  min-height: 100%;
+  margin: 0px auto;
+  flex-wrap:wrap;
+  justify-content:flex-start;
+  padding-left: 39px;
+  .item{
+    height: 170px;
+    min-width: 308px;
+    max-width: 308px;
+    box-sizing: border-box;
+    position: relative;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 4px 0px;
+    cursor: pointer;
+    flex: 1 1 auto;
+    margin: 0px 0px 16px 16px;
+    padding: 16px;
+    background: rgb(255, 255, 255);
+    border-radius: 3px;
+    transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1) 0s;
+    &:hover{
+          box-shadow: rgba(25, 25, 26, 0.08) 0px 6px 28px -3px, rgba(0, 0, 0, 0.05) 0px 3px 9px -1px;
+    }
+    &.add{
+      &::before,&::after{
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: block;
+      }
+      &::before{
+        width: 30px;
+        border-width: 1px;
+        border-style: solid;
+        border-color: rgb(16, 113, 211);
+        border-image: initial;
+      }
+      &::after{
+        height: 30px;
+        border-width: 1px;
+        border-style: solid;
+        border-color: rgb(16, 113, 211);
+        border-image: initial;
+      }
+    }
+    a{
+      display:block;
+      height:100%;
+      color:#333;
+      text-decoration:none;
+      text-align:left;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .opts{
+      padding:0;
+      list-style:none;
+      display:flex;
+      position:absolute;
+      right:10px;
+      bottom:10px;
+      li{
+        width:30px;
+        &.edit-btn{
+          color:#11d847;
+        }
+        &.setting-btn{
+          color: #409EFF;
+        }
+        &.delete-btn{
+          color:#f56c6c;
+        }
+      }
+    }
+    .p-logo{
+      max-width: 70%;
+			max-height: 55%;
+			position: absolute;
+			right: 50%;
+			top: 50%;
+      transform: translate(50%,-50%);
+      border-radius: 10%;
+    }
+  }
+}
+</style>

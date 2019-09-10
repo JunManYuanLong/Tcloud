@@ -1,0 +1,25 @@
+@font-face {font-family: "iconfont";
+  src: url('iconfont.eot?t=1558937365047'); /* IE9 */
+  src: url('iconfont.eot?t=1558937365047#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('data:application/x-font-woff2;charset=utf-8;base64,d09GMgABAAAAAARYAAsAAAAACNgAAAQKAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHEIGVgCDBgqFNIRgATYCJAMMCwgABCAFhG0HQxuzBxGVnInIfhbYDdcb7nco2HKR/DIIJTGUbhxAaIqy3Pnwbub7QFL+5wLEOTEZKz6dKKmJJKfepO10JnPFZxGbRDSE0O32mwSGqbxRJNV+/9acQxA2QpXkzrd+ZIv5L2CaH+o5PaUmFAm3/zlc2liahfMD5TLXpKgXYBxQYGNN6rYd6B3ICfotwzvRjdXJ/UAAMIQhBWTq9NxSiBCAhhEAZM3K5QshZjQQGogEotxYMVcAaYUBIlfHXQLQEvw+eYMsIgIcDDzQ2MJl05Zg4vM+f8a7/W5zPAS4/ZkACIsAHkAKAAEg8yotM8BHkRTwYJpEaE43QgAB15ff7yfg6CKj9Q8P4EAAYgSSBDDYhCgHPOcdTiJ9RvP2mntyg40AKIBvAImRtTYgkgFC2CUhJDw8ImKzq9R9QJIafMTl8zKbXt9pw4Fc59JO93CDc0Gpy+NlrIQDYPMq4mWrXD7PSL1to14zBGW6t37IbS9jhGyIaJend5JGfgUzLG0Y9Tj01bp3wKwfwiMMaaXDdpfUMOoIWupNDCbeEUdpXP2QPdBWdqDfzmiJjjtsnZfF6J1DNhwaniVrCaxE6RsMXY5gn2ug6jLfqJMcHmH6PFmLQI4g+r6ZXXN3f/0XzfQ0Veh5iqf0FO26CXpaVIIe0IY/ajXVWTP+3d/faKKnmUpPiHhGR5l0i15kCntNG/7a4SRa7bbxuIUtUjr5MDT/U+s0O2v/aKAPAxXxNH1KR2lATm9JA3vAFHqJPmWjDE/FE1Slp1jzXzUatB3+F6M1Dl9NE+QgOVpB5WD/29hTsU/6+/YrRRGanHXtK8yKRVbXLXLLhRGaKfrZJwI5SlaBj6b0ZxoGwoN495lxj0N+1inqF3It26RFFMrlgwOP407FvhvsQ7kcIwddm2DCZ1WVb304KFu+4lqWrEUUKW709z4Z7ZXeDg6gSomWNSXdhK9QFZHOAh0A/tt3XZ2O/+uR2j/K32D7/+Pursd+E6UBgPvmLnvg9t914FkQcSBwfwsusE7Q+UjLT+U4HDPO22d409Vguh1+yGHxI7fZdRITIYpcGjhjhAJPFIMUsClgIMkBI9EEYJI5iyVWpI/sASR5UEConsCRnQOe6oUUsF8wcPiDkZo+MHqsa0riksymEPqMEQRXSMKqFLaeZ2H+FqXKfUrzA/IRqU38YKZl5OMOlkh9TGhP0mIWIKgqwKYOwzyvoKYqxZC1mLne6OnLqp6khVXRmZmCIB9DERC4AolQpSS85mxW+PktJCk5HzXU1BiPEGkl7QOTxgAgHUkJqjmXR1onkoUxAQikUgA2ZUK5FamAurpXCoWYJiYI1TZ0ppGASrTxZcX1bQFg0NF8TpoRX+WXdVLK1RaVhLFKqzsdAAA=') format('woff2'),
+  url('iconfont.woff?t=1558937365047') format('woff'),
+  url('iconfont.ttf?t=1558937365047') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */
+  url('iconfont.svg?t=1558937365047#iconfont') format('svg'); /* iOS 4.1- */
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-quanping:before {
+  content: "\e6e0";
+}
+
+.icon-tuichuquanping:before {
+  content: "\e603";
+}
+

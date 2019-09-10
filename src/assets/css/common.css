@@ -1,0 +1,40 @@
+@charset "UTF-8";
+/* CSS Document */
+* {
+  font: '微软雅黑';
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  box-sizing: border-box; }
+
+body, html {
+  height: 100%;
+  overflow: auto; }
+
+a {
+  color: #27A9E3;
+  text-decoration: none;
+  cursor: pointer; }
+
+img {
+  border: none;
+  max-width: 100%; }
+
+ul, li {
+  margin: 0;
+  padding: 0;
+  list-style: none; }
+
+em, i {
+  font-style: normal; }
+
+.common-right-content {
+  margin-left: 240px; }
+
+.common-module-right {
+  margin-left: 370px; }
+
+/*# sourceMappingURL=common.css.map */

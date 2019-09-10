@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+  <title>icons/start-test</title>
+  <desc>Created with Sketch.</desc>
+  <defs></defs>
+  <g id="Test-Plan-&amp;-Results" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="æµè¯è®¡å-ä»»å¡" transform="translate(-1212.000000, -22.000000)">
+      <g id="start-button" transform="translate(1188.000000, 0.000000)">
+        <g id="icons/start-test" transform="translate(24.000000, 22.000000)">
+          <path d="M8,13 L8,15 L2,15 C0.8954305,15 1.3527075e-16,14.1045695 0,13 L0,3 C-1.3527075e-16,1.8954305 0.8954305,1 2,1 L12,1 C13.1045695,1 14,1.8954305 14,3 L14,7 L12,7 L12,3 L2,3 L2,13 L8,13 Z" id="Combined-Shape" fill="#FFFFFF" fill-rule="nonzero" opacity="0.900000036"></path>
+          <path d="M11.5884461,9.15605792 L14.9216111,11.5819078 C15.3681534,11.9068976 15.4666912,12.532348 15.1417014,12.9788903 C15.0858822,13.0555869 15.0194343,13.1239513 14.9443552,13.1819279 L11.6111903,15.7558255 C11.1740659,16.0933766 10.5460674,16.0126565 10.2085163,15.5755321 C10.0733308,15.4004686 10,15.1855257 10,14.9643418 L10,9.96459436 C10,9.41230961 10.4477153,8.96459436 11,8.96459436 C11.2114585,8.96459436 11.4174742,9.03162601 11.5884461,9.15605792 Z" id="Rectangle-15" fill="#FFFFFF"></path>
+          <rect id="Rectangle-9" fill="#FFCD3A" x="4" y="5" width="6" height="2" rx="0.5"></rect>
+          <rect id="Rectangle-9" fill="#24E16F" x="4" y="9" width="3" height="2" rx="0.5"></rect>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

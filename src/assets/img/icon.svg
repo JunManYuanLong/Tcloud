@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+  <title>icons/project-activity</title>
+  <desc>Created with Sketch.</desc>
+  <defs></defs>
+  <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="icons/project-activity" fill-rule="nonzero">
+      <g id="Shape">
+        <path d="M11,4 L1,4.019 C0.448,4.019 0,3.571 0,3.019 C0,2.467 0.448,2.019 1,2.019 L11,2 L11,4 Z" fill="#1071D3"></path>
+        <path d="M15,9 L5,9 L5,7 L15,7 C15.552,7 16,7.448 16,8 C16,8.552 15.552,9 15,9 Z" fill="#1071D3"></path>
+        <path d="M15,4.019 L13,4 L13,2 L15,2.019 C15.552,2.019 16,2.467 16,3.019 C16,3.572 15.552,4.019 15,4.019 Z" fill="#21CA64"></path>
+        <path d="M11,14 L1,14 C0.448,14 0,13.552 0,13 C0,12.448 0.448,12 1,12 L11,12 L11,14 Z" fill="#1071D3"></path>
+        <path d="M15,14 L13,14 L13,12 L15,12 C15.552,12 16,12.448 16,13 C16,13.552 15.552,14 15,14 Z" fill="#1071D3"></path>
+        <path d="M3,9 L1,9 C0.448,9 0,8.552 0,8 C0,7.448 0.448,7 1,7 L3,7 L3,9 Z" fill="#FFAA21"></path>
+      </g>
+    </g>
+  </g>
+</svg>
