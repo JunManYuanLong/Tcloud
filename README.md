@@ -10,14 +10,14 @@ https://github.com/bigbaser/TcloudServer
 http://tcloud-demo.ywopt.com/#/login （账号：admin 密码：123456）
 
 ## 接口配置：
-1、启动后端服务
-2、找到项目的config 文件夹，配置不同环境的接口
-3、图片上传功能需要配置OSS相关的后端授权接口
+1、启动后端服务<br>
+2、找到项目的config 文件夹，配置不同环境的接口<br>
+3、图片上传功能需要配置OSS相关的后端授权接口<br>
 
 ## Environment
-1、首先安装 node 环境
-2、安装npm 工具包
-3、命令在项目的根目录下运行
+1、首先安装 node 环境<br>
+2、安装npm 工具包<br>
+3、命令在项目的根目录下运行<br>
 
 ## 安装项目依赖
 
