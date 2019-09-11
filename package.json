@@ -45,6 +45,7 @@
     "vue-clipboard2": "^0.3.0",
     "vue-codemirror": "^4.0.6",
     "vue-cookies": "^1.5.8",
+    "vue-infinite-loading": "^2.4.4",
     "vue-phoenix": "^2.4.8",
     "vue-quill-editor": "^3.0.6",
     "vue-router": "^3.0.1",
