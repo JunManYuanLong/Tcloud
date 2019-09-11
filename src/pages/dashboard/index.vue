@@ -34,6 +34,12 @@
       <div class="chart-item">
         <ve-line :data="issueLineRankData" :settings="issueLineRankSettings"></ve-line>
       </div>
+      <div class="chart-item">
+        <ve-line :data="issueLineCreateData" :settings="issueLineCreateCountSettings"></ve-line>
+      </div>
+      <div class="chart-item">
+        <ve-line :data="issueLineFinishData" :settings="issueLineFinishCountSettings"></ve-line>
+      </div>
     </div>
 
     <div class="title-bar">需求统计<span>（总数：<em>{{countData.requirement}}</em>）</span></div>
@@ -83,6 +89,18 @@ startDate.setTime(startDate.getTime() - 3600 * 1000 * 24 * 90);
 					'rank':'issue 分数',
 				},
         yAxisName:['评分']
+			};
+      this.issueLineCreateCountSettings = {
+				labelMap:{
+					'count':'issue 新增数',
+				},
+        yAxisName:['个数']
+			};
+      this.issueLineFinishCountSettings = {
+				labelMap:{
+					'count':'issue 关闭数',
+				},
+        yAxisName:['个数']
 			};
       this.rqLineSettings =  {
         labelMap: {
@@ -157,6 +175,16 @@ startDate.setTime(startDate.getTime() - 3600 * 1000 * 24 * 90);
 				rows: [
 				]
 				},
+        issueLineCreateData:{
+        columns: ['creation_time', 'count'],
+        rows: [
+        ]
+        },
+        issueLineFinishData:{
+        columns: ['modified_time', 'count'],
+        rows: [
+        ]
+        },
         teamWorkData:{
           columns: ['nickname', 'case_count','issue_count'],
           rows: [
@@ -246,12 +274,16 @@ startDate.setTime(startDate.getTime() - 3600 * 1000 * 24 * 90);
             return item
           })
           let teamWorkData = data.tester_data.reverse()
+          let createIssueInfo = data.create_issue_count
+          let finishIssueInfo = data.finish_issue_count
           this.countData.issue = data.issue_sum
           this.countData.requirement = data.requirement_sum
           this.countData.task = data.task_sum
           this.countData.taskCase = data.taskcase_sum
           this.issueLineData.rows = issueData
 					this.issueLineRankData.rows = issueData
+          this.issueLineCreateData.rows = createIssueInfo
+          this.issueLineFinishData.rows = finishIssueInfo
           this.rqLineData.rows = rqData
           this.taskCaseLineData.rows = taskCaseData
           this.issueHistogramData.rows = issueData

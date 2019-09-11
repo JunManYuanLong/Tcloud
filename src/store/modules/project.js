@@ -55,7 +55,7 @@ export default {
     },
     [ENDURING_PROJECT_INFOS] (state) {
       state.projectList = localStorage.getItem('projectlist')?JSON.parse(localStorage.getItem('projectlist')):[]
-      state.currentProject = localStorage.getItem('curProject')?JSON.parse(localStorage.getItem('curProject')):''
+      state.currentProject = localStorage.getItem('curProject')&&localStorage.getItem('curProject')!='undefined'?JSON.parse(localStorage.getItem('curProject')):''
       state.userList = localStorage.getItem('userList')?JSON.parse(localStorage.getItem('userList')): []
       state.versionList = localStorage.getItem('versionList')?JSON.parse(localStorage.getItem('versionList')):[]
       state.ossData = localStorage.getItem('ossData')?JSON.parse(localStorage.getItem('ossData')): ''

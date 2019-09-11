@@ -54,8 +54,10 @@ instance.interceptors.response.use(
   response => {
     if(response.data.code === 410 || response.data.code === 412){
       window.location.hash = '#/login'
+      return Promise.reject(response.data)
     }else if (response.data.code === 108) {
       window.location.hash = '#/403'
+      return Promise.reject(response.data)
     }else if(response.data.code !== 0 ){
       return Promise.reject(response.data)
       // return response

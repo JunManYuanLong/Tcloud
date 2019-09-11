@@ -36,6 +36,7 @@
     "less-loader": "^5.0.0",
     "moment": "^2.23.0",
     "particles.js": "^2.0.0",
+    "postcss": "^7.0.18",
     "qs": "^6.7.0",
     "quill-image-drop-module": "^1.0.3",
     "v-charts": "^1.19.0",

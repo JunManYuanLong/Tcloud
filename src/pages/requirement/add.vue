@@ -121,7 +121,7 @@
       <el-button type="primary" @click="sureFun">确定</el-button>
     </el-form-item>
   </el-form>
-  <case-dialog ref="addCaseDialog" :isShow="createCaseDialogVisible" :taskCaseList="addData.case_ids" type="create" @close="isShowCaseDialog(false)" @caseSelect="caseSelected"></case-dialog>
+  <case-dialog v-if="createCaseDialogVisible" ref="addCaseDialog" :isShow="createCaseDialogVisible" :taskCaseList="addData.case_ids" type="create" @close="isShowCaseDialog(false)" @caseSelect="caseSelected"></case-dialog>
   </div>
 </template>
 <script>

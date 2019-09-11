@@ -108,7 +108,7 @@
         @click="exoportCase"
       >导出用例</el-button>
       <div class="module-cases">
-        <div class="m-item" v-for="(item,index) in taskCaseList">
+        <div class="m-item" v-for="(item,index) in taskCaseList" :key="index">
           <div class="module" @click="toggleOpen(item,index)">
             <span class="title">
               <img src="../../../../assets/img/moduleTag1.png" alt>
@@ -125,7 +125,7 @@
               <span class="handler">处理人</span>
               <span class="priority">优先级</span>
             </li>
-            <li class="case-item" v-for="subItem in item.info">
+            <li class="case-item" v-for="(subItem, index) in item.info" :key="index">
               <span class="status">
                 <i class="status-icon" :class="getStatusIcon(subItem.status)"></i>
                 {{getTaskCaseStatus(subItem.status)}}

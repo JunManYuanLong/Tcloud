@@ -14,7 +14,7 @@
           </div>
         </a-timeline-item>
       </a-timeline>
-      <infinite-loading @infinite="infiniteHandler"  ref="infiniteLoading">
+      <infinite-loading v-if="pageTotal" @infinite="infiniteHandler"  ref="infiniteLoading">
       </infinite-loading>
     </div>
     <div class="content">
@@ -305,9 +305,6 @@ import InfiniteLoading from 'vue-infinite-loading'
       },
       getRqrmntList () {
         this.page.page_index = 1
-        this.$nextTick(() => {
-          this.$refs.infiniteLoading.$emit('$InfiniteLoading:reset');
-        });
         rqrmntApi.getRequirementReviewList({
           projectid: this.projectId,
           page_index:this.page.page_index,
@@ -315,6 +312,9 @@ import InfiniteLoading from 'vue-infinite-loading'
         }).then(res => {
           this.reviewList = res.data.data
           this.pageTotal = Math.ceil(res.data.count/this.page.page_size)
+          this.$nextTick(() => {
+            this.$refs.infiniteLoading.$emit('$InfiniteLoading:reset');
+          });
         })
       },
       getText(v){
@@ -432,6 +432,7 @@ import InfiniteLoading from 'vue-infinite-loading'
         this.selectedRecord = id
       },
       infiniteHandler($state) {
+        // console.log('this.page',this.page.page_index,'--',this.pageTotal)
         if(this.page.page_index < this.pageTotal){
           this.page.page_index ++
         }else{

@@ -89,7 +89,7 @@ import taskApi from '@/api/task.js'
         },
         selectedModule:{},
         selectedModuleCaseT:[],
-        taskCaseListTemp:this.taskCaseList
+        taskCaseListTemp:this.taskCaseList?this.taskCaseList:[]
       }
     },
     computed:{
@@ -115,7 +115,6 @@ import taskApi from '@/api/task.js'
               }
             })
           }
-          console.log('modules',modules)
           return modules
         }
         else{
@@ -132,7 +131,24 @@ import taskApi from '@/api/task.js'
           })
         }
         return cases
+      }
+    },
+    watch: {
+      'isShow': function (cval) {
+        this.dialogVisible = cval
       },
+      'selectedModule.caseCheck':{
+        handler:function(val){
+          let sVal = new Set(val)
+          //获取差集
+          let minus = this.selectedModuleCaseT.filter(x => !sVal.has(x))
+          let minusT = new Set(minus)
+          this.taskCaseListTemp = this.taskCaseListTemp.filter(x => !minusT.has(x))
+        },
+        deep:true
+      }
+    },
+    methods:{
       selectedCases(){
         let cases = []
         Object.keys(this.moduleLists).forEach(item=>{
@@ -146,32 +162,18 @@ import taskApi from '@/api/task.js'
           })
         })
         return cases
-      }
-    },
-    watch: {
-      'isShow': function (cval) {
-        this.dialogVisible = cval
       },
-      'selectedModule.caseCheck':{
-        handler:function(val){
-          console.log('selectChange',val)
-        },
-        deep:true
-      }
-    },
-    methods:{
       handleClose () {
         this.$emit('close')
       },
       handleSure() {
-        
-        console.log('selelctedcases',this.selectedCases)
-        this.$emit('caseSelect', this.selectedCases)
+        let selectedCases = this.selectedCases()
+        let cases = Array.from(new Set([...this.taskCaseListTemp, ...selectedCases]))
+        this.$emit('caseSelect', cases)
       },
       //反选操作
       getTaskCase(caseList){
         //把选择的caseid 分配回对应的结构里
-        console.log('caselist-rest',caseList)
         let selectedCases = []
         if(caseList&&caseList.length>0){
           caseApi.getCaseListByIds({case_ids:caseList}).then(res=>{
@@ -215,11 +217,9 @@ import taskApi from '@/api/task.js'
         
       },
       handlerOpen(module){
-        console.log('moopen',module)
         if(module.hasOwnProperty('modules')){//有子模块才给伸缩
           module.isOpen = !module.isOpen
         }
-
         // 
       },
       getCaseList(){
@@ -245,7 +245,7 @@ import taskApi from '@/api/task.js'
       getCaseCheck(){
         let caseCheck = []
         if(this.curSubModuleIndex!==''){
-            caseCheck = this.moduleList[this.curModuleIndex].modules[this.curSubModuleIndex].caseCheck
+          caseCheck = this.moduleList[this.curModuleIndex].modules[this.curSubModuleIndex].caseCheck
         }else{
           caseCheck = this.moduleList[this.curModuleIndex].caseCheck
         }
@@ -270,7 +270,6 @@ import taskApi from '@/api/task.js'
           let mData = res.data.data
           this.page.total = res.data.module_total
           this.moduleLists[this.page.page_index] = mData.map((item,index) =>{
-            // console.log('modules',item,index)
             item.isSelectAll = false
             item.isIndeterminate = false
             item.handleChange = false
@@ -302,6 +301,8 @@ import taskApi from '@/api/task.js'
         })
       },
       getFilterModules(){
+        let selectedCases = this.selectedCases()
+        this.taskCaseListTemp =  Array.from(new Set([...this.taskCaseListTemp, ...selectedCases]))
         this.moduleChange = true
         this.page.page_index = 1
         this.getModules()

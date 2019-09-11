@@ -175,7 +175,7 @@
     </div>
     <subRequirementDetail v-model="requirementDrawer" :requireData="subRequirementDetail" :drawerStyle="drawerStyle"
                           @data-change="initTableData" @data-delete="initTableData"></subRequirementDetail>
-    <case-dialog ref="addCaseDialog" :isShow="createCaseDialogVisible" :taskCaseList="editData.case_ids" type="create" @close="isShowCaseDialog(false)" @caseSelect="caseSelected"></case-dialog>
+    <case-dialog v-if="createCaseDialogVisible" ref="addCaseDialog" :isShow="createCaseDialogVisible" :taskCaseList="editData.case_ids" type="create" @close="isShowCaseDialog(false)" @caseSelect="caseSelected"></case-dialog>
   </div>
 </template>
 <script>

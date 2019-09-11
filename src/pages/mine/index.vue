@@ -26,25 +26,31 @@
       </div>
       <el-tabs v-model="activeName" type="card">
         <el-tab-pane label="issue" name="first">
-          <el-input placeholder="输入标题或ID关键字" v-model="issueTitle" class="m-search" clearable>
+          <IssueList v-if="activeName === 'first'" :taskType="taskType" :proId="proId"></IssueList>
+          <!-- <el-input placeholder="输入标题或ID关键字" v-model="issueTitle" class="m-search" clearable>
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
           </el-input>
-          <a-table :dataSource="filterIssueData" :rowKey="record => record.id"  :scroll="{ x: true }">
+          <a-table
+            :dataSource="filterIssueData"
+            :rowKey="record => record.id"
+            :scroll="{ x: true }">
             <a-table-column title="ID" width="80px" data-index="id" key="id">
               <template slot-scope="text, record">
-              <router-link
-                :to="{name:'issueDetailPage',params:{projectId:record.project_id,versionId:'all',issueId:record.id}}"
-              >{{record.id}}</router-link>
-            </template>
+                <router-link
+                  :to="{name:'issueDetailPage',params:{projectId:record.project_id,versionId:'all',issueId:record.id}}"
+                >{{record.id}}</router-link>
+              </template>
             </a-table-column>
             <a-table-column title="标题" data-index="title" key="title" width="300px">
               <template slot-scope="text, record">
-              <router-link  class="fixed-width-title" :title="record.title"
-                :to="{name:'issueDetailPage',params:{projectId:record.project_id,versionId:'all',issueId:record.id}}"
-              >{{record.title}}</router-link>
-            </template>
+                <router-link
+                  class="fixed-width-title"
+                  :title="record.title"
+                  :to="{name:'issueDetailPage',params:{projectId:record.project_id,versionId:'all',issueId:record.id}}"
+                >{{record.title}}</router-link>
+              </template>
             </a-table-column>
-            <a-table-column title="版本" data-index="version_name" key="version_name"/>
+            <a-table-column title="版本" data-index="version_name" key="version_name" />
             <a-table-column title="严重程度" data-index="level" key="level">
               <template slot-scope="text, record">{{getLevel(record.level)}}</template>
             </a-table-column>
@@ -54,13 +60,14 @@
             <a-table-column title="状态" data-index="handle_status" key="handle_status">
               <template slot-scope="text, record">{{issueStatus[record.handle_status]}}</template>
             </a-table-column>
-            
-            <a-table-column title="处理人" data-index="handler_name" key="handler_name"/>
-            <a-table-column title="创建人" data-index="creator_name" key="creator_name"/>
-          </a-table>
+
+            <a-table-column title="处理人" data-index="handler_name" key="handler_name" />
+            <a-table-column title="创建人" data-index="creator_name" key="creator_name" />
+          </a-table> -->
         </el-tab-pane>
         <el-tab-pane label="任务" name="second">
-          <el-input placeholder="输入标题或ID关键字" v-model="taskTitle" class="m-search" clearable>
+          <TaskList v-if="activeName === 'second'" :taskType="taskType" :proId="proId"></TaskList>
+          <!-- <el-input placeholder="输入标题或ID关键字" v-model="taskTitle" class="m-search" clearable>
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
           </el-input>
           <a-table :dataSource="filterTaskData" :rowKey="record => record.id">
@@ -73,22 +80,25 @@
             </a-table-column>
             <a-table-column title="标题" data-index="name" key="name">
               <template slot-scope="text, record">
-                <router-link class="fixed-width-title" :title="record.name"
+                <router-link
+                  class="fixed-width-title"
+                  :title="record.name"
                   :to="{name:'taskResult',params:{projectId:record.project_id,versionId:'all',taskId:record.id}}"
                 >{{record.name}}</router-link>
               </template>
             </a-table-column>
-            <a-table-column title="任务方法" data-index="tmethod" key="tmethod"/>
-            <a-table-column title="任务类型" data-index="ttype" key="ttype"/>
-            <a-table-column title="开始时间" data-index="start_time" key="start_time"/>
-            <a-table-column title="结束时间" data-index="end_time" key="end_time"/>
-            <a-table-column title="版本" data-index="version_name" key="version_name"/>
-            <a-table-column title="执行人" data-index="executor_name" key="executor_name"/>
-            <a-table-column title="创建人" data-index="creator_name" key="creator_name"/>
-          </a-table>
+            <a-table-column title="任务方法" data-index="tmethod" key="tmethod" />
+            <a-table-column title="任务类型" data-index="ttype" key="ttype" />
+            <a-table-column title="开始时间" data-index="start_time" key="start_time" />
+            <a-table-column title="结束时间" data-index="end_time" key="end_time" />
+            <a-table-column title="版本" data-index="version_name" key="version_name" />
+            <a-table-column title="执行人" data-index="executor_name" key="executor_name" />
+            <a-table-column title="创建人" data-index="creator_name" key="creator_name" />
+          </a-table> -->
         </el-tab-pane>
         <el-tab-pane label="执行用例" name="third" v-if="taskType!=3">
-          <el-input placeholder="输入标题或ID关键字" v-model="taskcaseTitle" class="m-search" clearable>
+          <CaseList v-if="activeName === 'third'" :taskType="taskType" :proId="proId"></CaseList>
+          <!-- <el-input placeholder="输入标题或ID关键字" v-model="taskcaseTitle" class="m-search" clearable>
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
           </el-input>
           <a-table :dataSource="filterTaskcaseData" :rowKey="record => record.cnumber">
@@ -101,17 +111,19 @@
             </a-table-column>
             <a-table-column title="标题" data-index="title" key="title">
               <template slot-scope="text, record">
-                <router-link class="fixed-width-title" :title="record.title"
+                <router-link
+                  class="fixed-width-title"
+                  :title="record.title"
                   :to="{name:'taskcaseDetail',params:{projectId:record.project_id,versionId:'all',taskcaseId:record.taskcaseid}}"
                 >{{record.title}}</router-link>
               </template>
             </a-table-column>
-            <a-table-column title="所属模块" data-index="module_name" key="module_name"/>
+            <a-table-column title="所属模块" data-index="module_name" key="module_name" />
             <a-table-column title="测试结果" data-index="status" key="status">
               <template slot-scope="text, record">{{getTaskCaseStatus(record.status)}}</template>
             </a-table-column>
-            <a-table-column title="处理人" data-index="handler_name" key="handler_name"/>
-          </a-table>
+            <a-table-column title="处理人" data-index="handler_name" key="handler_name" />
+          </a-table> -->
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -121,6 +133,9 @@
 import projectApi from "@/api/project.js";
 import mineApi from "@/api/mine.js";
 import vuescroll from "vuescroll";
+import IssueList from './IssueList'
+import TaskList from './TaskList'
+import CaseList from './CaseList'
 export default {
   data() {
     return {
@@ -176,19 +191,26 @@ export default {
       issueTitle: "",
       taskTitle: "",
       taskcaseTitle: "",
-      settings:{
-        issue_config:{}
-      }
+      settings: {
+        issue_config: {}
+      },
+      proId: ''
     };
   },
   components: {
-    vuescroll
+    vuescroll,
+    IssueList,
+    TaskList,
+    CaseList
   },
   watch: {
     taskType: {
       handler: function(val) {
         this.selectPro = "";
-        this.getInitData(val);
+        // this.getInitData(val);
+        if (val == 3) {
+          this.activeName = "first";
+        }
       },
       deep: true
     }
@@ -233,8 +255,8 @@ export default {
       }
       return data;
     },
-    issueStatus(){
-      return this.settings.issue_config.status
+    issueStatus() {
+      return this.settings.issue_config.status;
     }
   },
   methods: {
@@ -362,21 +384,26 @@ export default {
     },
     selectProFun(id) {
       this.selectPro = id;
-      this.getInitData(this.taskType, id);
+      // this.getInitData(this.taskType, id);
+      this.proId = id
     },
-    getSettings(){
-      projectApi.getProjectSettings().then(res=>{
-        let data = res.data.data;
-        this.settings = data
-      },error=>{
-
-      })
+    getSettings() {
+      projectApi.getProjectSettings().then(
+        res => {
+          let data = res.data.data;
+          this.settings = data;
+        },
+        error => {}
+      );
     }
   },
   created() {
-    this.getSettings()
+    this.getSettings();
     this.getMineProjects();
-    this.getInitData(this.taskType);
+    // this.getInitData(this.taskType);
+  },
+  mounted () {
+    this.proId = this.projectId
   }
 };
 </script>
@@ -463,8 +490,8 @@ export default {
 .ant-table-wrapper {
   margin-top: 10px;
 }
-.el-tabs{
-  padding:5px 8px;
-  background: #fff
+.el-tabs {
+  padding: 5px 8px;
+  background: #fff;
 }
 </style>
