@@ -702,17 +702,12 @@ export default {
     //      },
     async gettoken() {
       let token = await axios.get(
-        "http://220.178.168.107:7100/auth/api/skip/mock",
+        "http://xxxxxxxx",
         { params: { name: this.$store.getters.userName } }
       );
       return token;
     },
     toStfPage() {
-      //        this.gettoken().then(res=>{
-      //          this.stfurl = `http://220.178.168.107:7100/?jwt=${res.data.token}`
-      //          console.log("跳转到STF");
-      //          console.log(this.stfurl );
-      //        })
       tcdevicesApi.getTcToken({ name: this.$store.getters.userName }).then(
         res => {
           this.token = res.data.data.token;
