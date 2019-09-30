@@ -7,7 +7,7 @@
 https://github.com/bigbaser/TcloudServer
 
 ## demo地址：
-http://tcloud-demo.ywopt.com/#/login （账号：admin 密码：123456）
+http://tcloud-demo.innotechx.com/#/login （账号：admin 密码：123456）
 
 ## 接口配置：
 1、启动后端服务<br>
