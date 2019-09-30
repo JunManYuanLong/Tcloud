@@ -106,6 +106,16 @@
                         {{addData.case_ids && addData.case_ids.length > 0 ? '继续选择' : '请选择'}}
                       </el-button>
                 </el-form-item>
+                <el-form-item label="标签：" prop="tag"  class="blockItem">
+                    <el-select v-model="addData.tag" placeholder="请选择" multiple  clearable style="width:80%;">
+                      <el-option
+                      v-for="item in tagList"
+                      :key="item.id"
+                      :label="item.tag"
+                      :value="item.id">
+                    </el-option>
+                    </el-select>
+                  </el-form-item>
               <el-form-item label="需求描述：" prop="description">
                 <editor v-if="visible" v-model="addData.description"></editor>
               </el-form-item>
@@ -154,6 +164,12 @@ const prefixCls = 'drawer';
           return {}
         }
       },
+      tagList:{
+        type:Array,
+        default() {
+          return []
+        }
+      }
     },
     data(){
       return {
@@ -319,7 +335,7 @@ const prefixCls = 'drawer';
             if(this.versionId !== 'all'){
               params.version=this.versionId
             }
-            
+            params.tag = this.addData.tag.toString()
             // params.handler = this.userId
             params.creator = this.userId
             params.attach = JSON.stringify(this.uploadFile)

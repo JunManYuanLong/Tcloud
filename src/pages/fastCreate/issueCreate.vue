@@ -144,6 +144,16 @@
                   </el-option>
                 </el-select>
             </el-form-item>
+            <el-form-item label="标签：" prop="tag">
+            <el-select v-model="addData.tag" placeholder="请选择" multiple  clearable>
+              <el-option
+              v-for="item in tagList"
+              :key="item.id"
+              :label="item.tag"
+              :value="item.id">
+            </el-option>
+            </el-select>
+          </el-form-item>
           <el-form-item label="描述：" prop="description" class="blockItem">
             <editor v-if="dialogVisible" v-model="addData.description"></editor>
           </el-form-item>
@@ -185,6 +195,7 @@
 <script>
 import editor from "@/components/editor";
 import issueApi from "@/api/issue.js";
+import tagApi from "@/api/tag.js";
 import moduleApi from "@/api/module.js";
 import setApi from "@/api/settingType.js";
 import taskApi from "@/api/task.js";
@@ -215,7 +226,8 @@ export default {
         description: "",
         detection_chance: "",
         requirement_id:'',
-        case_covered:''
+        case_covered:'',
+        tag:[]
       },
       rqLoading:false,
       requirements:[],
@@ -248,7 +260,8 @@ export default {
       },
       moduleList: [],
       picPreview: false,
-      dialogImageUrl: ""
+      dialogImageUrl: "",
+      tagList:[]
     };
   },
   watch: {
@@ -327,6 +340,7 @@ export default {
           params.attach = JSON.stringify(this.uploadFile);
           params.creator = this.userId;
           params.modifier = this.userId;
+          params.tag = this.addData.tag.toString()
           params = dealObjectValue(params);
           if (this.issueId) {
             //编辑
@@ -403,10 +417,21 @@ export default {
         this.rqLoading = false
         this.requirements = []
       }
-    }
+    },
+    getTagList() {
+      let params = {
+        project_id: this.projectId
+      }
+      tagApi.getTag(params).then(res => {
+        this.tagList = res.data.data
+      },error=>{
+        this.$message.error(error.message)
+      })
+    },
   },
   created() {
     this.getModuleList();
+    this.getTagList()
   }
 };
 function dealObjectValue(obj) {

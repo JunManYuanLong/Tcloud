@@ -108,7 +108,7 @@
         @click="exoportCase"
       >导出用例</el-button>
       <div class="module-cases">
-        <div class="m-item" v-for="(item,index) in taskCaseList" :key="index">
+        <div class="m-item" v-for="(item, index) in taskCaseList" :key="index">
           <div class="module" @click="toggleOpen(item,index)">
             <span class="title">
               <img src="../../../../assets/img/moduleTag1.png" alt>

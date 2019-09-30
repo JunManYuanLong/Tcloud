@@ -78,7 +78,7 @@
           @change="filterData"
           style="width: 150px;"
         >
-          <el-option v-for="item in tagData" :key="item.id" :label="item.tag" :value="item.id"></el-option>
+          <el-option v-for="item in tagList" :key="item.id" :label="item.tag" :value="item.id"></el-option>
         </el-select>
       </div>
       </div>
@@ -88,7 +88,7 @@
       v-if="versionId!='all'"
       @click="addTaskDialogVisible = true"
       class="add-task"
-    >新增任务</el-button>  
+    >新增任务</el-button>
     <div class="task-show-item">
       <a-table
         :rowKey="record => record.id"
@@ -101,30 +101,39 @@
         <a-table-column title="ID" data-index="id" key="id"></a-table-column>
         <a-table-column title="标题" data-index="name" key="name">
           <template slot-scope="text, record">
-            <router-link
+            <p
+              style="color:#409eff"
               class="fixed-width-title"
               :title="record.name"
-              :to="{name:'taskResult',params:{taskId:record.id, versionId: versionId}}"
-            >{{record.name}}</router-link>
+              @click="openEditDialog(record)"
+            >{{record.name}}</p>
           </template>
         </a-table-column>
-        <a-table-column title="附件" data-index="attachment" key="attachment">
-          <template
-            slot-scope="text, record"
-          > <a :href="JSON.parse(record.attachment)[0].url" v-if="record.attachment && JSON.parse(record.attachment)[0]">{{record.attachment && JSON.parse(record.attachment)[0] ? JSON.parse(record.attachment)[0].name : ''}}</a>
+
+        <a-table-column title="用例执行" key="case" width="6%">
+          <template slot-scope="text, record">
+            <div v-if="record.casestatus.sum === 0" class="noCases">
+              <p
+                class="status_up"
+              >{{record.casestatus.sum === 0 ? 0 : parseInt((record.casestatus.pass + record.casestatus.fail) * 100 / record.casestatus.sum)}}%</p>
+            </div>
+            <router-link
+              v-else
+              :to="{name:'taskCase',params:{taskId:record.id, versionId: versionId}}"
+            >
+              <p
+                class="status_up"
+              >{{record.casestatus.sum === 0 ? 0 : parseInt((record.casestatus.pass + record.casestatus.fail) * 100 / record.casestatus.sum)}}%</p>
+            </router-link>
           </template>
         </a-table-column>
-        <a-table-column title="处理人" data-index="executor" key="executor">
+
+        <a-table-column title="处理人" data-index="executor" key="executor" width="6%">
           <template
             slot-scope="text, record"
           >{{record.executor.length>0?record.executor[0].name:''}}</template>
         </a-table-column>
-        <a-table-column title="类型" data-index="ttype" key="ttype"></a-table-column>
-        <a-table-column title="方法" data-index="tmethod" key="tmethod"></a-table-column>
-        <a-table-column title="时间" data-index="start_time" key="start_time">
-          <template slot-scope="text, record">{{record.start_time}} - {{record.end_time}}</template>
-        </a-table-column>
-        <a-table-column title="状态" data-index="status" key="status">
+                <a-table-column title="状态" data-index="status" key="status" width="6%">
           <template slot-scope="text, record">
             <el-dropdown trigger="click" class="issue-edit-dropdown">
               <span class="el-dropdown-link">
@@ -146,7 +155,7 @@
             </el-dropdown>
           </template>
         </a-table-column>
-        <a-table-column title="优先级" data-index="priority" key="priority">
+        <a-table-column title="优先级" data-index="priority" key="priority" width="5%">
           <template slot-scope="text, record">
             <el-dropdown trigger="click" class="issue-edit-dropdown">
               <span class="el-dropdown-link">
@@ -169,26 +178,24 @@
             </el-dropdown>
           </template>
         </a-table-column>
-        <a-table-column title="用例执行" key="case">
-          <template slot-scope="text, record">
-            <div v-if="record.casestatus.sum === 0" class="noCases">
-              <p
-                class="status_up"
-              >{{record.casestatus.sum === 0 ? 0 : parseInt((record.casestatus.pass + record.casestatus.fail) * 100 / record.casestatus.sum)}}%</p>
-            </div>
-            <router-link
-              v-else
-              :to="{name:'taskCase',params:{taskId:record.id, versionId: versionId}}"
-            >
-              <p
-                class="status_up"
-              >{{record.casestatus.sum === 0 ? 0 : parseInt((record.casestatus.pass + record.casestatus.fail) * 100 / record.casestatus.sum)}}%</p>
-            </router-link>
+        <a-table-column title="类型" data-index="ttype" key="ttype" width="8%"></a-table-column>
+        <a-table-column title="方法" data-index="tmethod" key="tmethod" width="8%"></a-table-column>
+        <a-table-column title="时间" data-index="start_time" key="start_time" >
+          <template slot-scope="text, record">{{record.start_time}} - {{record.end_time}}</template>
+        </a-table-column>
+
+        <a-table-column title="附件" data-index="attachment" key="attachment">
+          <template
+            slot-scope="text, record"
+          > <a :href="JSON.parse(record.attachment)[0].url" v-if="record.attachment && JSON.parse(record.attachment)[0]">{{record.attachment && JSON.parse(record.attachment)[0] ? JSON.parse(record.attachment)[0].name : ''}}</a>
           </template>
         </a-table-column>
-        <a-table-column title="操作" key="action">
+
+        <a-table-column title="操作" key="action" width="15%">
           <template slot-scope="text, record">
-            <el-button type="primary" @click="openEditDialog(record)">编辑</el-button>
+            <router-link :to="{name:'taskResult',params:{taskId:record.id, versionId: versionId}}">
+              <el-button type="primary">查看</el-button>
+            </router-link>
             <el-button type="success" @click="copyTask(record)">复制</el-button>
             <el-button type="danger" @click="deleteTask(record)">删除</el-button>
           </template>
@@ -287,17 +294,9 @@
               style="width: 350px"
               multiple
             >
-              <el-option v-for="item in tagData" :key="item.id" :label="item.tag" :value="item.id"></el-option>
+              <el-option v-for="item in tagList" :key="item.id" :label="item.tag" :value="item.id"></el-option>
             </el-select>
           </el-form-item>
-          <div>
-            <el-button
-              class="addTagData"
-              type="primary"
-              plain
-              @click="createVersionDialogVisible=true"
-            >增加标签</el-button>
-          </div>
         </div>
 
         <el-form-item label="起止时间：" prop="duration_time">
@@ -409,14 +408,8 @@
             style="width: 350px"
             multiple
           >
-            <el-option v-for="item in tagData" :key="item.id" :label="item.tag" :value="item.id"></el-option>
+            <el-option v-for="item in tagList" :key="item.id" :label="item.tag" :value="item.id"></el-option>
           </el-select>
-          <el-button
-            class="addTagData"
-            type="primary"
-            plain
-            @click="createVersionDialogVisible=true"
-          >增加标签</el-button>
         </el-form-item>
         <el-form-item label="起止时间：" prop="duration_time">
           <el-date-picker
@@ -461,6 +454,7 @@
 </template>
 <script>
 import issue from "@/pages/issue/index.vue";
+import tagApi from "@/api/tag.js";
 import taskApi from "@/api/task.js";
 import userApi from "@/api/user.js";
 import setApi from "@/api/settingType.js";
@@ -501,7 +495,6 @@ export default {
         data: [],
         total: 1
       },
-      tagData:[],
       addTaskDialogVisible: false,
       addTaskForm: {
         attachment: [],
@@ -584,7 +577,8 @@ export default {
       pageSet: {
         page_size: 10,
         page_index: 1
-      }
+      },
+      tagList:[]
     };
   },
   components: {
@@ -649,7 +643,6 @@ export default {
             .then(res => {
               this.$message.success("添加标签成功");
               this.createVersionDialogVisible = false;
-              this.getTagData();
             })
             .catch(err => {
               this.createVersionDialogVisible = false;
@@ -661,12 +654,6 @@ export default {
     closeCreateVersionDialog() {
       this.createVersionForm.title = "";
       this.createVersionForm.description = "";
-    },
-    getTagData() {
-      taskApi.getTag(this.projectId, 2).then(res => {
-        this.tagData = res.data.data;
-        console.log(this.tagData);
-      });
     },
     closeAddTaskDialog() {
       this.addTaskDialogVisible = false;
@@ -962,9 +949,19 @@ export default {
           this.$message.error('操作失败：' + error.message)
         })
       },
+      getTagList() {
+        let params = {
+          project_id: this.projectId
+        }
+        tagApi.getTag(params).then(res => {
+          this.tagList = res.data.data
+        },error=>{
+          this.$message.error(error.message)
+        })
+      },
     },
     created(){
-      this.getTagData();
+      this.getTagList();
       this.getTaskData({
         page_size: this.pagination.pageSize,
         page_index: this.pagination.current
@@ -1123,24 +1120,25 @@ export default {
   display: flex;
   flex-wrap:wrap;
   align-items: center;
-  padding: 10px;
+  padding: 10px 10px 10px 8px;
   .item{
     display: flex;
     margin-bottom:10px;
     margin-right:8px;
     align-items: center;
     label{
-      width:70px;
+      min-width:60px;
     }
   }
   div {
-    font-size: 12px;
+    font-size: 13px;
   }
   .el-select {
     margin-right: 8px;
   }
   .m-search {
-    width: 200px;
+    font-size: 12px;
+    /*width: 200px;*/
   }
 }
 // 	.addTagData{
@@ -1180,5 +1178,8 @@ export default {
       }
     }
   }
+}
+.el-button+.el-button {
+    margin-left: 0px;
 }
 </style>

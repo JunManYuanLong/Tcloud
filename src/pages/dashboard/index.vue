@@ -42,18 +42,17 @@
       </div>
     </div>
 
-    <div class="title-bar">需求统计<span>（总数：<em>{{countData.requirement}}</em>）</span></div>
+    <div class="title2-bar"> <div>需求统计<span>（总数：<em>{{countData.requirement}}</em>）</span></div></div>
+    <div class="title2-bar">任务统计<span>（任务总数：<em>{{countData.task}}</em>个，执行用例：<em>{{countData.taskCase}}</em>条）</span></div>
     <div class="charts-wrap">
-      <div class="chart-item">
+      <div class="chart-req-item">
         <ve-line :data="rqLineData" :settings="rqLineSettings"></ve-line>
       </div>
-    </div>
-    <div class="title-bar">任务统计<span>（任务总数：<em>{{countData.task}}</em>个，执行用例：<em>{{countData.taskCase}}</em>条）</span></div>
-    <div class="charts-wrap">
-      <div class="chart-item">
+      <div class="chart-req-item">
         <ve-line :data="taskCaseLineData" :settings="tkLineSettings"></ve-line>
       </div>
     </div>
+
      <div class="title-bar">团队管理</div>
     <div class="charts-wrap-group">
       <div class="chart-item">
@@ -320,8 +319,23 @@ startDate.setTime(startDate.getTime() - 3600 * 1000 * 24 * 90);
       width:33%;
       margin-bottom:10px;
     }
+    .chart-req-item{
+      width:45%;
+      margin-bottom:10px;
+    }
   }
   .title-bar{
+    margin:10px 0 20px 20px;
+    padding:5px 14px;
+    border-left:3px solid #1b73ff;
+    background:linear-gradient(left,  #d1ecff, #ffffff);
+    em{
+      color:#008bef;
+    }
+  }
+  .title2-bar{
+    width:48%;
+    display:inline-block;
     margin:10px 0 20px 20px;
     padding:5px 14px;
     border-left:3px solid #1b73ff;

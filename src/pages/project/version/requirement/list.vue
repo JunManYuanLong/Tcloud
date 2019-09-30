@@ -2,7 +2,7 @@
   <div>
     <ul class="filter-field">
       <li><label>标题：</label>
-        <el-input v-model="filterData.title" placeholder="输入标题或ID关键字" clearable @keyup.native="getRdataChange"></el-input>
+        <el-input v-model="filterData.title" placeholder="请输入标题或ID关键字" clearable @keyup.native="getRdataChange"></el-input>
       </li>
       <li><label>状态：</label>
         <el-select v-model="filterData.status" placeholder="请选择" clearable multiple @change="getRdataChange">
@@ -64,6 +64,16 @@
           <el-option :value="3" label="低于预期"></el-option>
         </el-select>
       </li>
+      <li><label>标签：</label>
+        <el-select v-model="filterData.tag" placeholder="请选择"   clearable   @change="getRdataChange">
+          <el-option
+            v-for="item in tagList"
+            :key="item.id"
+            :label="item.tag"
+            :value="item.id">
+          </el-option>
+        </el-select>
+      </li>
     </ul>
     <div class="opt-bar">
        <el-button type="primary" @click="toAddFun" v-if="versionId !='all'">新增需求</el-button>
@@ -88,6 +98,72 @@
               key="title">
             <template slot-scope="text, record">
                 <p class="toDetail fixed-width-title" :title="record.title" @click="toDetailFun(record)">{{record.title}}</p>
+              </template>
+          </a-table-column>
+          <a-table-column
+              title="创建人"
+              dataIndex="creator_name"
+              key="creator_name">
+          </a-table-column>
+          <a-table-column
+              title="处理人"
+              dataIndex="handler"
+              key="handler">
+            <template slot-scope="text, record">
+              <el-dropdown trigger="click" class='issue-edit-dropdown' @visible-change="dropdownChange">
+                <span class="el-dropdown-link">
+                  <span>{{record.handler_name}}</span><i class="el-icon-arrow-down el-icon--right"></i>
+                </span>
+                <el-dropdown-menu slot="dropdown" class="issue-edit-dropdow-wrap">
+                  <div class="requirement-down-wrap">
+                    <el-input
+                      placeholder="搜索"
+                      v-model="searchUser" class="m-search" clearable>
+                      <i slot="prefix" class="el-input__icon el-icon-search"></i>
+                    </el-input>
+                    <ul class="user">
+                      <el-dropdown-item v-for="item in dropdownUserList" :key="item.userid"
+                                        :class="{selected:record.handler_name ==item.nickname}">
+                        <div @click="updateHandler(record,item)">
+                          {{item.nickname}}
+                        </div>
+                      </el-dropdown-item>
+                    </ul>
+                  </div>
+                </el-dropdown-menu>
+              </el-dropdown>
+              </template>
+          </a-table-column>
+          <a-table-column
+              title="优先级"
+              dataIndex="priority"
+              key="priority">
+            <template slot-scope="text, record">
+                <span>{{rqSet.priority[record.priority]}}</span>
+              </template>
+          </a-table-column>
+                <a-table-column
+              title="状态"
+              dataIndex="board_status"
+              key="board_status">
+            <template slot-scope="text, record">
+                <el-dropdown trigger="click" class='issue-edit-dropdown'>
+                    <span class="el-dropdown-link">
+                      <span>{{rqSet.status[record.board_status]}}</span><i class="el-icon-arrow-down el-icon--right"></i>
+                    </span>
+                  <el-dropdown-menu slot="dropdown" class="issue-edit-dropdow-wrap">
+                    <div class="requirement-down-wrap">
+                      <ul>
+                        <el-dropdown-item v-for="(val,key) in rqSet.status" :key="key"
+                                          :class="{selected:record.board_status ==key}">
+                          <div @click="updateStatus(record,key)">
+                            {{val}}
+                          </div>
+                        </el-dropdown-item>
+                      </ul>
+                    </div>
+                  </el-dropdown-menu>
+                </el-dropdown>
               </template>
           </a-table-column>
           <a-table-column
@@ -119,73 +195,11 @@
               dataIndex="creation_time"
               key="creation_time">
           </a-table-column>
-          <a-table-column
-              title="状态"
-              dataIndex="board_status"
-              key="board_status">
-            <template slot-scope="text, record">
-                <el-dropdown trigger="click" class='issue-edit-dropdown'>
-                    <span class="el-dropdown-link">
-                      <span>{{rqSet.status[record.board_status]}}</span><i class="el-icon-arrow-down el-icon--right"></i>
-                    </span>
-                  <el-dropdown-menu slot="dropdown" class="issue-edit-dropdow-wrap">
-                    <div class="requirement-down-wrap">
-                      <ul>
-                        <el-dropdown-item v-for="(val,key) in rqSet.status" :key="key"
-                                          :class="{selected:record.board_status ==key}">
-                          <div @click="updateStatus(record,key)">
-                            {{val}}
-                          </div>
-                        </el-dropdown-item>
-                      </ul>
-                    </div>
-                  </el-dropdown-menu>
-                </el-dropdown>
-              </template>
-          </a-table-column>
-          <a-table-column
-              title="优先级"
-              dataIndex="priority"
-              key="priority">
-            <template slot-scope="text, record">
-                <span>{{rqSet.priority[record.priority]}}</span>
-              </template>
-          </a-table-column><a-table-column
-              title="创建人"
-              dataIndex="creator_name"
-              key="creator_name">
-          </a-table-column><a-table-column
-              title="处理人"
-              dataIndex="handler"
-              key="handler">
-            <template slot-scope="text, record">
-              <el-dropdown trigger="click" class='issue-edit-dropdown' @visible-change="dropdownChange">
-                <span class="el-dropdown-link">
-                  <span>{{record.handler_name}}</span><i class="el-icon-arrow-down el-icon--right"></i>
-                </span>
-                <el-dropdown-menu slot="dropdown" class="issue-edit-dropdow-wrap">
-                  <div class="requirement-down-wrap">
-                    <el-input
-                      placeholder="搜索"
-                      v-model="searchUser" class="m-search" clearable>
-                      <i slot="prefix" class="el-input__icon el-icon-search"></i>
-                    </el-input>
-                    <ul class="user">
-                      <el-dropdown-item v-for="item in dropdownUserList" :key="item.userid"
-                                        :class="{selected:record.handler_name ==item.nickname}">
-                        <div @click="updateHandler(record,item)">
-                          {{item.nickname}}
-                        </div>
-                      </el-dropdown-item>
-                    </ul>
-                  </div>
-                </el-dropdown-menu>
-              </el-dropdown>
-              </template>
-          </a-table-column>
+
+
+
           <a-table-column
               title="评审状态"
-              width="120px"
               dataIndex="review_status"
               key="review_status">
             <template slot-scope="text, record">
@@ -200,9 +214,8 @@
               </template>
           </a-table-column>
     </a-table>
-    <requirementAdd v-model="requirementAddDrawer" :drawerStyle="drawerStyle"
-                    @data-add="requirementAdd"></requirementAdd>
-    <requirementDetail v-model="requirementDrawer" :requireData="requirementDetail" :drawerStyle="drawerStyle"
+    <requirementAdd v-model="requirementAddDrawer" :drawerStyle="drawerStyle" :tagList="tagList" @data-add="requirementAdd"></requirementAdd>
+    <requirementDetail v-model="requirementDrawer" :requireData="requirementDetail"  :tagList="tagList" :drawerStyle="drawerStyle"
                        @data-change="detailchange" @data-delete="requirementDelete"></requirementDetail>
   </div>
 </template>
@@ -212,6 +225,7 @@
   import requirementAdd from '@/pages/project/version/requirement/add'
   import requirementDetail from '@/pages/project/version/requirement/requirementDetail'
   import setApi from '@/api/settingType.js'
+  import tagApi from '@/api/tag.js'
   export default {
     data() {
       return {
@@ -254,8 +268,10 @@
           handler: [],
           status: [],
           priority: [],
-          review_status: '' // 新增
+          review_status: '', // 新增
+          tag:''
         },
+        tagList:[]
       }
     },
     components: {
@@ -429,6 +445,7 @@
         params.handler_id = this.filterData.handler.toString()
         params.board_status = this.filterData.status.toString()
         params.priority = this.filterData.priority.toString()
+        params.tag = this.filterData.tag
         params.review_status = this.filterData.review_status
         params.worth = this.filterData.worth
         params.worth_sure = this.filterData.worth_sure
@@ -537,10 +554,21 @@
       },
       requirementAdd() {
         this.refreshFun()
-      }
+      },
+      getTagList() {
+        let params = {
+          project_id: this.projectId
+        }
+        tagApi.getTag(params).then(res => {
+          this.tagList = res.data.data
+        },error=>{
+          this.$message.error(error.message)
+        })
+      },
     },
     created() {
       this.getRdata({page_size:this.pagination.pageSize,page_index:this.pagination.current})
+      this.getTagList()
     }
   }
 </script>
@@ -566,7 +594,7 @@
     justify-content: flex-start;
     flex-wrap: wrap;
     margin: 10px 0 10px;
-    font-size:12px;
+    font-size:13px;
     li {
       margin-left: 8px;
       display: flex;
@@ -577,7 +605,7 @@
 
     label {
       display: block;
-      min-width: 56px;
+      min-width: 60px;
     }
 
     .el-select {

@@ -193,6 +193,16 @@
                     </el-option>
                   </el-select>
                 </el-form-item>
+                <el-form-item label="标签：" prop="tag" class="blockItem">
+                  <el-select v-model="editData.tag" placeholder="请选择" multiple  clearable style="width:80%">
+                    <el-option
+                    v-for="item in tagList"
+                    :key="item.id"
+                    :label="item.tag"
+                    :value="item.id">
+                  </el-option>
+                  </el-select>
+                </el-form-item>
                 <el-form-item label="描述：" prop="description" class="blockItem">
                   <editor v-if="visible" v-model="editData.description"></editor>
                 </el-form-item>
@@ -251,6 +261,7 @@
 <script>
 import editor from "@/components/editor";
 import issueApi from "@/api/issue.js";
+import tagApi from "@/api/tag.js";
 import projectApi from "@/api/project.js";
 import moduleApi from "@/api/module.js";
 import userApi from "@/api/user.js";
@@ -310,7 +321,8 @@ export default {
         requirement_id: "",
         requirement: "",
         version:"",
-        case_covered:""
+        case_covered:"",
+        tag:[]
       },
       showEditRq: false,
       rqLoading: false,
@@ -350,7 +362,8 @@ export default {
       changeCount: 0,
       descriptionChangeCount: 0,
       descriptionEmitChange: false,
-      copyBtn: ""
+      copyBtn: "",
+      tagList:[]
     };
   },
   computed: {
@@ -539,6 +552,7 @@ export default {
           params.module_id = this.module_id;
           params.project_id = parseInt(this.projectId);
           params.attach = JSON.stringify(this.uploadFile);
+          params.tag = this.editData.tag.toString()
           // params.version = parseInt(this.version);
           if (this.editData.requirement) {
             //绑定需求有修改的情况
@@ -659,7 +673,8 @@ export default {
         detection_chance: detailData.detection_chance,
         requirement_id: detailData.requirement_id,
         requirement_title: detailData.requirement_title,
-        case_covered: detailData.case_covered
+        case_covered: detailData.case_covered,
+        tag:detailData.tag?detailData.tag.split(',').map(Number):[],
       };
       let upload =
         detailData.attach != ""
@@ -754,10 +769,21 @@ export default {
         this.rqLoading = false;
         this.requirements = [];
       }
-    }
+    },
+    getTagList() {
+      let params = {
+        project_id: this.projectId
+      }
+      tagApi.getTag(params).then(res => {
+        this.tagList = res.data.data
+      },error=>{
+        this.$message.error(error.message)
+      })
+    },
   },
   created() {
     this.getModuleList();
+    this.getTagList()
   },
   mounted() {
     this.copyBtn = new Clipboard(this.$refs.copy);

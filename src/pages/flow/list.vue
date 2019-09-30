@@ -28,7 +28,7 @@
     </div>
     <div class="search-bar">
       <el-input
-          placeholder="输入标题或ID关键字"
+          placeholder="请输入标题或ID关键字"
           v-model="searchData.title" class="m-search" clearable  @change="filterData" clearable>
           <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
@@ -135,7 +135,7 @@
       :total="pageSet.total">
     </el-pagination>
     </div>
-    
+
     <el-dialog
       title="编辑流程"
       :visible.sync="editFlowDialog"
@@ -301,7 +301,7 @@ import editor from '@/components/editor'
     watch:{
       'searchData':{
         handler:function(val){
-          console.log('searklkk------------------',val) 
+          console.log('searklkk------------------',val)
           this.pageSet.page_index = 1
           this.getFlowList()
         },
@@ -349,7 +349,7 @@ import editor from '@/components/editor'
         if(this.searchData.platform){
           params.platform = this.searchData.platform.toString()
         }
-        
+
         flowApi.getFlowList(params).then(res=>{
           let data = res.data.data
           this.flowList = data.map(item=>{

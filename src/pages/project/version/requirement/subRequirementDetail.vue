@@ -123,6 +123,16 @@
                         {{editData.case_ids && editData.case_ids.length > 0 ? '继续选择' : '请选择'}}
                       </el-button>
                 </el-form-item>
+                <el-form-item label="标签：" prop="tag" class="blockItem">
+                  <el-select v-model="editData.tag" placeholder="请选择" multiple  clearable style="width:80%">
+                    <el-option
+                    v-for="item in tagList"
+                    :key="item.id"
+                    :label="item.tag"
+                    :value="item.id">
+                  </el-option>
+                  </el-select>
+                </el-form-item>
                 <el-form-item label="需求描述：" prop="description" class="blockItem">
                   <editor v-model="editData.description"></editor>
                 </el-form-item>
@@ -197,6 +207,12 @@
       },
       requireData: {
         type: Object
+      },
+      tagList:{
+        type:Array,
+        default() {
+          return []
+        }
       }
     },
     data() {
@@ -423,6 +439,7 @@
             if(this.editData.report_time!==''){
               params.report_time = this.editData.report_time.toString()
             }
+            params.tag = this.editData.tag.toString()
             console.log('eidtData', params)
             let changes = params
             params = dealObjectValue(params)
@@ -531,7 +548,8 @@
           worth_sure : detailData.worth_sure,
           case_ids:detailData.case_ids,
           issue:detailData.issue,
-          expect_time:detailData.expect_time
+          expect_time:detailData.expect_time,
+          tag:detailData.tag?detailData.tag.split(',').map(Number):[],
         }
         let upload = detailData.attach != '' ? JSON.parse(detailData.attach) : {
           images: [],

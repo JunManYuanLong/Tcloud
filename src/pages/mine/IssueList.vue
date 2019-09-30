@@ -1,7 +1,7 @@
 <template>
   <div class="issue-list">
     <el-input
-      placeholder="输入标题或ID关键字"
+      placeholder="请输入标题或ID关键字"
       v-model="searchText"
       class="m-search"
       clearable
@@ -12,8 +12,8 @@
       <i slot="prefix" class="el-input__icon el-icon-search"></i>
     </el-input>
     <el-table :data="tableData" style="width: 100%">
-      <el-table-column prop="id" label="ID" width="80"></el-table-column>
-      <el-table-column prop="title" label="标题" width="180">
+      <el-table-column prop="id" label="ID" width="60"></el-table-column>
+      <el-table-column prop="title" label="标题" width="520">
         <template slot-scope="scope">
           <router-link
             :to="{name:'issueDetailPage',params:{projectId: scope.row.project_id,versionId:'all',issueId:scope.row.id}}"
@@ -158,5 +158,9 @@ export default {
 
 <style lang="scss" scoped>
 .issue-list {
+  .el-table--mini{
+    font-size: 14px;
+  }
 }
+
 </style>

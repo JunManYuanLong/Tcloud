@@ -40,5 +40,5 @@ export default {
       method: 'delete',
       url: `${urlPrefix}module/${params.id}`
     })
-  }
+  },
 }

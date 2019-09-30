@@ -92,7 +92,7 @@ export default {
       return this.$route.params.serial;
     },
     srcurl() {
-      return "http://stf.ywopt.com/#!/control/" + this.$route.params.serial;
+      return `${process.env.STF_URL}/#!/control/${this.$route.params.serial}`;
     },
     devices_uuid() {
       return this.$route.params.devices_uuid;
@@ -194,7 +194,7 @@ export default {
       tcdevicesApi.getTcToken({ name: this.$store.getters.userName }).then(
         res => {
           this.token = res.data.data.token;
-          this.stfurl = `http://stf.ywopt.com?jwt=${this.token}`;
+          this.stfurl = `${process.env.STF_URL}?jwt=${this.token}`;
           console.log(this.stfurl);
         },
         error => {

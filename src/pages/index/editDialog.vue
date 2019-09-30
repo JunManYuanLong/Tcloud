@@ -121,6 +121,8 @@ import ossApi from '@/api/oss.js'
                   this.$emit('refreshData')
                   this.$refs.addForm.resetFields()
 									this.taskResult.image = ''
+                },error=>{
+                  this.$message.error(error.message)
                 })
               }else{
 								this.addData['logo']= this.taskResult.image          
@@ -135,6 +137,8 @@ import ossApi from '@/api/oss.js'
                   this.$emit('refreshData')
                   this.$refs.addForm.resetFields()
 									this.taskResult.image = ''
+                },error=>{
+                  this.$message.error(error.message)
                 })
               }
           } else {

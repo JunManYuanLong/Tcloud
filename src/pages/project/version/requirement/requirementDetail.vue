@@ -113,6 +113,16 @@
                         {{editData.case_ids && editData.case_ids.length > 0 ? '继续选择' : '请选择'}}
                       </el-button>
                 </el-form-item>
+                <el-form-item label="标签：" prop="tag" class="blockItem">
+                  <el-select v-model="editData.tag" placeholder="请选择" multiple  clearable style="width:80%">
+                    <el-option
+                    v-for="item in tagList"
+                    :key="item.id"
+                    :label="item.tag"
+                    :value="item.id">
+                  </el-option>
+                  </el-select>
+                </el-form-item>
                 <el-form-item label="需求描述：" prop="description" class="blockItem">
                   <editor v-if="visible" v-model="editData.description"></editor>
                 </el-form-item>
@@ -173,7 +183,7 @@
         </div>
       </transition>
     </div>
-    <subRequirementDetail v-model="requirementDrawer" :requireData="subRequirementDetail" :drawerStyle="drawerStyle"
+    <subRequirementDetail v-model="requirementDrawer" :requireData="subRequirementDetail"   :tagList="tagList" :drawerStyle="drawerStyle"
                           @data-change="initTableData" @data-delete="initTableData"></subRequirementDetail>
     <case-dialog v-if="createCaseDialogVisible" ref="addCaseDialog" :isShow="createCaseDialogVisible" :taskCaseList="editData.case_ids" type="create" @close="isShowCaseDialog(false)" @caseSelect="caseSelected"></case-dialog>
   </div>
@@ -210,6 +220,12 @@
       },
       requireData: {
         type: Object
+      },
+      tagList:{
+        type:Array,
+        default() {
+          return []
+        }
       }
     },
     data() {
@@ -574,6 +590,7 @@
             if(this.editData.report_time!==''){
               params.report_time = this.editData.report_time.toString()
             }
+            params.tag = this.editData.tag.toString()
             console.log('eidtData', params)
             let changes = params
             params = dealObjectValue(params)
@@ -683,7 +700,8 @@
           case_ids : detailData.case_ids,
           issue:detailData.issue,
           parent_list:detailData.parent_list,
-          expect_time:detailData.expect_time
+          expect_time:detailData.expect_time,
+          tag:detailData.tag?detailData.tag.split(',').map(Number):[],
         }
         let upload = detailData.attach != '' ? JSON.parse(detailData.attach) : {
           images: [],

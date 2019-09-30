@@ -117,6 +117,7 @@
           key="action">
           <template slot-scope="text, record">
              <el-button  v-if="moduleId!=='all'"  type="primary" @click="editFun(record)">编辑</el-button>
+             <el-button type="success" @click="copyCase(record)">复制</el-button>
               <el-button type="danger" @click="deleteFun(record)">删除</el-button>
           </template>
       </a-table-column>
@@ -196,7 +197,7 @@ import excelUpload from '@/pages/module/excelUpload.vue'
           priority:[],
           ctype:'',
           title:'',
-          user_id:'',
+          user_id:[],
         },
         date:'',
         pickerOptions: {
@@ -326,7 +327,7 @@ import excelUpload from '@/pages/module/excelUpload.vue'
         }
         if(this.moduleId&&this.moduleId!='all'){
           params.priority = this.searchData.priority.toString()
-          params.ctype = this.searchData.ctype.toString()
+          params.ctype = this.searchData.ctype
           params.title = this.searchData.title
           params.user_ids = this.searchData.user_id.toString()
           caseApi.getCaseByModule(this.moduleId,params).then(res => {
@@ -342,7 +343,7 @@ import excelUpload from '@/pages/module/excelUpload.vue'
         }else{
           params.project_id = this.projectId
           params.priority = this.searchData.priority.toString()
-          params.ctype = this.searchData.ctype.toString()
+          params.ctype = this.searchData.ctype
           params.title = this.searchData.title
           params.user_ids = this.searchData.user_id.toString()
           caseApi.getCaseList(params).then(res => {
@@ -446,7 +447,7 @@ import excelUpload from '@/pages/module/excelUpload.vue'
           params.end_time = moment(this.date[1]).format("YYYY-MM-DD")
         }
         params.priority = this.searchData.priority.toString()
-        params.ctype = this.searchData.ctype.toString()
+        params.ctype = this.searchData.ctype
         params.title = this.searchData.title
         params.user_ids = this.searchData.user_id.toString()
         if(this.moduleId == 'all'){
@@ -498,7 +499,34 @@ import excelUpload from '@/pages/module/excelUpload.vue'
       },
       $resize () {
         this.winHeight = window.innerHeight - 70
-      }
+      },
+      copyCase(caseItem) {
+        let copycase = Object.assign({}, caseItem);
+        let copyData = copycase;
+        copyData.creator = this.$store.state.login.userid
+        copyData.module_id = copycase.moduleid
+        this.$confirm(`您确定你要复制:"${copycase.title}" 这个用例吗?`, "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }).then(() => {
+          caseApi
+            .addCase(copyData)
+            .then(res => {
+              this.$message({
+                message: "case复制成功！",
+                type: "success"
+              });
+              // this.getcaseData()
+              this.pagination.current = 1;
+              this.getCaseList({page_size:this.pagination.pageSize,page_index:this.pagination.current})
+            })
+            .catch(err => {
+              this.$message.error("复制失败: " + err.message);
+              console.log(err);
+            });
+        });
+      },
     },
     mounted(){
       window.addEventListener('resize', this.$resize, true)

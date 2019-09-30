@@ -25,7 +25,7 @@
         </vuescroll>
       </div>
       <el-tabs v-model="activeName" type="card">
-        <el-tab-pane label="issue" name="first">
+        <el-tab-pane label="缺陷" name="first">
           <IssueList v-if="activeName === 'first'" :taskType="taskType" :proId="proId"></IssueList>
           <!-- <el-input placeholder="输入标题或ID关键字" v-model="issueTitle" class="m-search" clearable>
             <i slot="prefix" class="el-input__icon el-icon-search"></i>

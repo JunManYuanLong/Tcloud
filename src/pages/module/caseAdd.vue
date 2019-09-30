@@ -7,7 +7,7 @@
               <el-input class="case-add-input" v-model.trim="addData.title"></el-input>
             </el-form-item>
             <el-form-item label="前置条件：" prop="precondition">
-              <el-input class="case-add-input" v-model="addData.precondition" type="textarea"></el-input>
+              <el-input class="case-add-input" v-model="addData.precondition" :rows="4" type="textarea"></el-input>
             </el-form-item>
             <el-form-item label="用例类型：" prop="ctype">
               <el-checkbox-group v-model="addData.ctype">

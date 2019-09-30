@@ -17,10 +17,11 @@
               <span>项目管理</span>
             </template>
             <el-menu-item-group>
-              <!--  <el-menu-item :index="'/tag/tag'" :route="{name:'Tag'}">标签管理</el-menu-item>-->
               <el-menu-item :index="'/tag/staff'" :route="{name:'Staff'}">人员管理</el-menu-item>
+              <el-menu-item :index="'/tag/tag'" :route="{name:'Tag'}">标签管理</el-menu-item>
               <el-menu-item :index="'/tag/panelset'" :route="{name:'panelset'}">看板管理</el-menu-item>
               <el-menu-item :index="'/tag/flowset'" :route="{name:'flowset'}">流程管理</el-menu-item>
+
             </el-menu-item-group>
           </el-submenu>
         </el-menu>
@@ -136,10 +137,10 @@ export default {
   }
 
   .flow-content {
-    padding: 15px 20px 0 20px;
+    padding: 20px 20px 0 20px;
 
     .breadCrumb {
-      margin-bottom: 15px;
+      margin-bottom: 20px;
     }
   }
 

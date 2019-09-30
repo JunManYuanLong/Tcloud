@@ -1,7 +1,7 @@
 <template>
   <div class="task-list">
     <el-input
-      placeholder="输入标题或ID关键字"
+      placeholder="请输入标题或ID关键字"
       v-model="searchText"
       class="m-search"
       clearable
@@ -11,9 +11,9 @@
     >
       <i slot="prefix" class="el-input__icon el-icon-search"></i>
     </el-input>
-    <el-table :data="tableData" style="width: 100%">
-      <el-table-column prop="id" label="ID" width="80"></el-table-column>
-      <el-table-column prop="name" label="标题" width="100">
+    <el-table :data="tableData" style="width: 100%;font-size: 14px;" >
+      <el-table-column prop="id" label="ID" width="60"></el-table-column>
+      <el-table-column prop="name" label="标题" width="520">
         <template slot-scope="scope">
           <router-link
             :to="{name:'taskResult',params:{projectId: scope.row.project_id,versionId:'all',taskId:scope.row.id}}"
@@ -24,7 +24,7 @@
       <el-table-column prop="ttype" label="任务类型"></el-table-column>
       <el-table-column prop="start_time" label="开始时间"></el-table-column>
       <el-table-column prop="end_time" label="结束时间"></el-table-column>
-      <el-table-column prop="version_name" label="版本" width="180"></el-table-column>
+      <el-table-column prop="version_name" label="版本"></el-table-column>
       <el-table-column prop="executor_name" label="执行人"></el-table-column>
       <el-table-column prop="creator_name" label="创建人"></el-table-column>
     </el-table>
@@ -128,5 +128,9 @@ export default {
 
 <style lang="scss" scoped>
 .task-list {
+  .el-table--mini{
+    font-size: 14px;
+  }
 }
+
 </style>

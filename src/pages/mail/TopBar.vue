@@ -5,7 +5,7 @@
         <el-button type="text" @click="allRead" style="margin-left: 100px;" v-if="hasMail">全部标记已读</el-button>
       </div>
       <!-- 提示 -->
-      <div v-if="!hasMail" style="padding-top: 10px; text-align=center;">您没有收到任何消息</div>
+      <div v-if="!hasMail" style="padding-top: 10px; text-align: center;">您没有收到任何消息</div>
       <!-- 消息列表 -->
       <ul class="mail-box">
         <li class="mail-item" v-for="item in listData" :key="item.id" @click="showDetail(item)">
@@ -158,12 +158,12 @@ export default {
   },
   created() {
     // 启动websocket
-    // this.websocket();
+    this.websocket();
     this.getList()
   },
   watch: {
     '$route' (val) {
-      this.getList()
+      // this.getList()
     }
   },
   beforeDestroy() {

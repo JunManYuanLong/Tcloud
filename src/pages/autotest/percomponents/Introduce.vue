@@ -2,10 +2,10 @@
     <div class="introduce">
         <ArrowContainer head-text="测试方案介绍">
             <div slot="content" class="test-introduce">
-                <div class="title">随机测试（Maxim）</div>
-                <p><i class="el-icon-news"></i>策略：70%控件解析随机点击，其余30%按原Monkey事件概率分布</p>
-                <p><i class="el-icon-news"></i>操作：模拟用户点击，滑动等操作，进行app安装，卸载测试</p>
-                <p><i class="el-icon-news"></i>建议：每次测试事件建议>3小时，可以进行单个app压力，稳定性测试</p>
+                <div class="title">APP性能测试（Airtest）</div>
+                <p><i class="el-icon-news"></i>策略：执行特定的Airtest脚本，运行期间，后台用adb打点收集APP相关的各种性能数据</p>
+                <p><i class="el-icon-news"></i>操作：自动安装APP，运行脚本执行特定场景的测试用例，最后产出性能报表</p>
+                <p><i class="el-icon-news"></i>建议：最好使用同一台手机的这次运行与上一次运行比较。</p>
                 <el-button style="margin-top: 20px;" @click="goReportTest">点击查看我的提测任务</el-button>
             </div>
         </ArrowContainer>
@@ -27,15 +27,15 @@
                         <img src="http://ctsssource.oss-cn-shanghai.aliyuncs.com/monkey/static/resource/arrow-right.svg" alt="">
                     </div>
                     <div class="introduce-item">
-                        <img src="http://ctsssource.oss-cn-shanghai.aliyuncs.com/monkey/static/resource/pic3.svg" alt="">
-                        <p style="text-align: center;">登录</p>
+                        <img src="http://tcloud-static.oss-cn-beijing.aliyuncs.com/icon/lua.svg" alt="">
+                        <p style="text-align: center;">执行用例</p>
                     </div>
                     <div class="introduce-item">
                         <img src="http://ctsssource.oss-cn-shanghai.aliyuncs.com/monkey/static/resource/arrow-right.svg" alt="">
                     </div>
                     <div class="introduce-item">
-                        <img src="http://ctsssource.oss-cn-shanghai.aliyuncs.com/monkey/static/resource/pic4.svg" alt="">
-                        <p style="text-align: center;">随机测试</p>
+                        <img src="http://tcloud-static.oss-cn-beijing.aliyuncs.com/icon/collect.svg" alt="">
+                        <p style="text-align: center;">收集数据</p>
                     </div>
                     <div class="introduce-item">
                         <img src="http://ctsssource.oss-cn-shanghai.aliyuncs.com/monkey/static/resource/arrow-right.svg" alt="">
@@ -49,7 +49,8 @@
         </ArrowContainer>
         <ArrowContainer head-text="测试报告">
             <div slot="content" class="test-introduce">
-                <p>提供完整的测试报告，包括crash,anr,exception的报错信息。并且在crash位置有详细的截图，还可以下载到完整的logcat日志，方便后续定位问题
+                <p>
+                    提供完整的性能测试报告，包括CPU、FPS、冷起动时间、热起动时间、页面打开时间等
                 </p>
             </div>
         </ArrowContainer>
@@ -68,7 +69,7 @@ export default {
     },
     methods: {
         goReportTest () {
-            window.location.hash = '#/auto/report'
+            window.location.hash = '#/auto/perReport'
         }
     }
 }
@@ -90,14 +91,14 @@ export default {
     .test-process {
         .introduce-image {
             padding: 10px 30px;
-            display: flex; 
+            display: flex;
             align-items: center;
             .introduce-item {
                 width: 84px;
                 text-align: center;
                 box-sizing: border-box;
                 .special {
-                    width: 100%; 
+                    width: 100%;
                     height: 63px;
                     background: url('http://ctsssource.oss-cn-shanghai.aliyuncs.com/monkey/static/resource/pic5.svg') no-repeat center;
                     background-size: 50px 76px;

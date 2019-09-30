@@ -89,7 +89,8 @@ import taskApi from '@/api/task.js'
         },
         selectedModule:{},
         selectedModuleCaseT:[],
-        taskCaseListTemp:this.taskCaseList?this.taskCaseList:[]
+        taskCaseListTemp:this.taskCaseList?this.taskCaseList:[],
+        timer:''
       }
     },
     computed:{
@@ -266,6 +267,7 @@ import taskApi from '@/api/task.js'
           page_index:this.page.page_index,
           page_size:this.page.page_size
         }
+        
         moduleApi.getModuleByProject(this.projectId,params).then(res=>{
           let mData = res.data.data
           this.page.total = res.data.module_total
@@ -301,6 +303,20 @@ import taskApi from '@/api/task.js'
         })
       },
       getFilterModules(){
+        if(this.timer){
+          clearTimeout(this.timer);
+        }
+        if(this.search.module_title){
+            this.timer = setTimeout(() => {
+                this.filterFuntion()
+            }, 600)
+        }else{
+            // 输入框中的内容被删为空时触发，此时会清除之前展示的搜索结果
+            this.filterFuntion()
+        }
+        
+      },
+      filterFuntion(){
         let selectedCases = this.selectedCases()
         this.taskCaseListTemp =  Array.from(new Set([...this.taskCaseListTemp, ...selectedCases]))
         this.moduleChange = true

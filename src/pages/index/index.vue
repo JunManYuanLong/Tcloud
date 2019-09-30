@@ -28,7 +28,7 @@
           <span>持续集成</span>
         </router-link>
         <router-link
-          :class="{current: activeLink == 'RandomTest' || activeLink == 'TestReport'}"
+          :class="{current: activeLink == 'RandomTest' || activeLink == 'TestReport' || activeLink == 'PerTest' || activeLink == 'PerReport' || activeLink == 'AutoChart'}"
           tag="li"
           :to="{name:'auto'}"
         >

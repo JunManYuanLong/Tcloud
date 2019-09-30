@@ -1,5 +1,5 @@
 <template>
-  <div class="random-test">
+  <div class="per-test">
     <el-card class="card-auto" shadow="nerver">
       <el-steps :active="activeNum" align-center>
         <el-step title="测试方案介绍"></el-step>
@@ -26,11 +26,11 @@
   </div>
 </template>
 <script>
-import Introduce from "./components/Introduce";
-import UploadApk from "./components/UploadApk";
-import ChooseModel from "./components/ChooseModel";
-import MoreConfig from "./components/MoreConfig";
-import SubmitTest from "./components/SubmitTest";
+import Introduce from "./percomponents/Introduce";
+import UploadApk from "./percomponents/UploadApk";
+import ChooseModel from "./percomponents/ChooseModel";
+import MoreConfig from "./percomponents/MoreConfig";
+import SubmitTest from "./percomponents/SubmitTest";
 import monkeyApi from "@/api/monkey.js";
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 export default {
@@ -43,7 +43,7 @@ export default {
     };
   },
   computed: {
-    ...mapState('autotest', ['selectApk', 'runTime', 'selectPhoneList', 'testType']),
+    ...mapState('autotest', ['selectApk', 'perRunTime', 'selectPhoneList', 'testType', 'testConfig']),
     ...mapGetters('autotest', ['getJumpLogin', 'getIsInstallApp']),
     showBack() {
       return this.activeNum !== 1;
@@ -89,15 +89,16 @@ export default {
         login_username: '',
         login_password: '',
         type_id: this.testType / 1,
-        run_time: this.runTime / 1,
-        app_id: this.selectApk.id
+        run_time: this.perRunTime / 1,
+        app_id: this.selectApk.id,
+        test_config: this.testConfig
       };
       monkeyApi
-        .submiTest(params)
+        .submiTest(params, 2)
         .then(res => {
           // 跳转到列表页
           this.$message.success("提交成功");
-          window.location.hash = "#/auto/report";
+          window.location.hash = "#/auto/perReport";
         })
         .catch(err => {
           this.$message.error(err.message);

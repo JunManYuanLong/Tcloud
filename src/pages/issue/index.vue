@@ -4,7 +4,7 @@
     <ul class="filter-field">
       <li>
         <label>标题：</label>
-        <el-input v-model="filterData.title" placeholder="输入标题或ID关键字" clearable></el-input>
+        <el-input v-model="filterData.title" placeholder="请输入标题或ID关键字" clearable></el-input>
       </li>
       <li>
         <label>创建人：</label>
@@ -59,17 +59,29 @@
       <li>
         <label>级别：</label>
         <el-select v-model="filterData.level" filterable placeholder="请选择" clearable multiple>
-          <el-option v-for="(value,key) in issueSet.level" 
+          <el-option v-for="(value,key) in issueSet.level"
             :key="key"
             :label="value"
             :value="parseInt(key)">
           </el-option>
         </el-select>
       </li>
+      <li>
+        <label>标签：</label>
+        <el-select v-model="filterData.tag" placeholder="请选择"   clearable>
+          <el-option
+            v-for="item in tagList"
+            :key="item.id"
+            :label="item.tag"
+            :value="item.id">
+          </el-option>
+        </el-select>
+      </li>
+      
     </ul>
     <div class="action-bar">
-      <el-button type="primary" @click="toAddFun" v-if="version!='all'">新增Issue</el-button>
-      <el-button type="primary" @click="exportFun">导出Issue</el-button>
+      <el-button type="primary" @click="toAddFun" v-if="version!='all'">新增缺陷</el-button>
+      <el-button type="primary" @click="exportFun">导出缺陷</el-button>
     </div>
     <a-table
       :rowKey="record => record.issueid"
@@ -193,13 +205,14 @@
     </a-table>
     <addDialog
       :isShow="editDialogVisible"
-      :issueId="editIssueId"
+      :issueId="editIssueId" :tagList="tagList"
       @close="closeDialog"
       @refreshIssue="refreshFun"
     ></addDialog>
     <issueDetail
       v-model="issueDetailDrawer"
       :issueData="issueDetail"
+      :tagList="tagList"
       :drawerStyle="drawerStyle"
       @data-change="detailchange"
       @data-delete="IssueDelete"
@@ -208,6 +221,7 @@
 </template>
 <script>
 import issueApi from "@/api/issue.js";
+import tagApi from '@/api/tag.js'
 import moduleApi from "@/api/module.js";
 import userApi from "@/api/user.js";
 import setApi from "@/api/settingType.js";
@@ -241,7 +255,8 @@ export default {
         handle_status: [],
         priority: [],
         module_id: [],
-        level:[]
+        level:[],
+        tag:''
       },
       moduleList: [],
       searchUser: "",
@@ -249,7 +264,8 @@ export default {
       issueDetail: {},
       drawerStyle: {
         width: "910px"
-      }
+      },
+      tagList:[]
     };
   },
   components: {
@@ -309,7 +325,8 @@ export default {
         handle_status: [],
         priority: [],
         module_id: [],
-        level:[]
+        level:[],
+        tag:''
       };
       // this.getIssueData({page_size:this.pagination.pageSize,page_index:this.pagination.current})
       this.getModuleList();
@@ -612,6 +629,16 @@ export default {
     IssueDelete() {
       this.refreshFun();
     },
+    getTagList() {
+      let params = {
+        project_id: this.projectId
+      }
+      tagApi.getTag(params).then(res => {
+        this.tagList = res.data.data
+      },error=>{
+        this.$message.error(error.message)
+      })
+    },
   },
   created() {
     // this.initTableData()
@@ -620,6 +647,7 @@ export default {
       page_index: this.pagination.current
     });
     this.getModuleList();
+    this.getTagList()
   }
 };
 function dealObjectValue(obj) {
@@ -686,7 +714,7 @@ function dealObjectValue(obj) {
   }
 }
 .filter-field {
-  font-size:12px;
+  font-size:13px;
   .el-select {
     span:focus-within {
       border: none;
@@ -737,11 +765,12 @@ function dealObjectValue(obj) {
   color: #fff;
 }
 .filter-field {
+  padding-top: 10px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   flex-wrap: wrap;
-  margin: 10px 0 10px;
+  margin: 0 0 10px;
   li {
     margin-left: 8px;
     display: flex;
@@ -751,7 +780,7 @@ function dealObjectValue(obj) {
   }
   label {
     display: block;
-    min-width: 56px;
+    min-width: 60px;
   }
   .el-select {
     // width:150px;

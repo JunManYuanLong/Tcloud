@@ -33,7 +33,7 @@
   </div>
 </template>
 <script>
-import TestDetail from "./components/TestDetail";
+import TestDetail from "./percomponents/TestDetail";
 import ExpendTable from "./common/ExpendTable";
 import monkeyApi from "@/api/monkey.js";
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
@@ -86,7 +86,8 @@ export default {
         page_size: 10,
         page_index: this.allPageIndex,
         user_id: "",
-        id: ""
+        id: "",
+        test_type: 2
       };
       monkeyApi
         .getTestList(params)
@@ -95,9 +96,7 @@ export default {
           this.allTotal = res.data.total;
         })
         .catch(err => {
-          if (err.massage) {
-            this.$message.error(err.message);
-          }
+          this.$message.error(err.message);
         });
     },
     // 获取我的提测列表
@@ -106,7 +105,8 @@ export default {
         page_size: 10,
         page_index: this.minePageIndex,
         user_id: this.userId,
-        id: ""
+        id: "",
+        test_type: 2
       };
       monkeyApi
         .getTestList(params)
@@ -115,9 +115,7 @@ export default {
           this.mineTotal = res.data.total;
         })
         .catch(err => {
-          if (err.message) {
-            this.$message.error(err.message);
-          }
+          this.$message.error(err.message);
         });
     },
     // 切换page的回调

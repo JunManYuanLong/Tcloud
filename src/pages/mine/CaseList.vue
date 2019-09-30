@@ -1,7 +1,7 @@
 <template>
   <div class="case-list">
     <el-input
-      placeholder="输入标题或ID关键字"
+      placeholder="请输入标题或ID关键字"
       v-model="searchText"
       class="m-search"
       clearable
@@ -12,14 +12,14 @@
       <i slot="prefix" class="el-input__icon el-icon-search"></i>
     </el-input>
     <el-table :data="tableData" style="width: 100%">
-      <el-table-column label="编号" width="80">
+      <el-table-column label="ID" width="60">
         <template slot-scope="scope">
           <router-link
             :to="{name:'taskcaseDetail',params:{projectId: scope.row.project_id,versionId:'all',taskcaseId:scope.row.taskcaseid}}"
           >{{scope.row.cnumber}}</router-link>
         </template>
       </el-table-column>
-      <el-table-column prop="title" label="标题" width="230"></el-table-column>
+      <el-table-column prop="title" label="标题" width="520"></el-table-column>
       <el-table-column prop="module_name" label="所属模块"></el-table-column>
       <el-table-column prop="level" label="测试结果">
         <template slot-scope="scope">
@@ -134,5 +134,9 @@ export default {
 
 <style lang="scss" scoped>
 .case-list {
+  .el-table--mini{
+    font-size: 14px;
+  }
 }
+
 </style>

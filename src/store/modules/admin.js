@@ -66,12 +66,12 @@ export default {
                   index: 'manage',
                   route: {name:'projectManage'}
                 },
-                {
-                  icon: 'el-icon-star-off',
-                  text: '埋点管理',
-                  index: 'track',
-                  route: {name:'trackIndex'}
-                },
+                // {
+                //   icon: 'el-icon-star-off',
+                //   text: '埋点管理',
+                //   index: 'track',
+                //   route: {name:'trackIndex'}
+                // },
                 {
                   icon: 'el-icon-setting',
                   text: '项目管理',
@@ -129,12 +129,12 @@ export default {
                   index: 'manage',
                   route: {name:'projectManage'}
                 },
-                {
-                  icon: 'el-icon-star-off',
-                  text: '埋点管理',
-                  index: 'track',
-                  route: {name:'trackIndex'}
-                }
+                // {
+                //   icon: 'el-icon-star-off',
+                //   text: '埋点管理',
+                //   index: 'track',
+                //   route: {name:'trackIndex'}
+                // }
             ]
         },
         [IS_SHOW_MANAGE](state,show){

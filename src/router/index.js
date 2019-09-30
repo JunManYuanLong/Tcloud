@@ -197,7 +197,8 @@ let curRoutes = [
             component: () => import('@/pages/autotest/RandomTest.vue'),
             meta: {
               active: 'random',
-              breadText: '随机测试'
+              breadTextOne: 'monkey测试',
+              breadTextTwo: '随机测试'
             }
           },
           {
@@ -206,7 +207,37 @@ let curRoutes = [
             component: () => import('@/pages/autotest/TestReport.vue'),
             meta: {
               active: 'report',
-              breadText: '测试报告'
+              breadTextOne: 'monkey测试',
+              breadTextTwo: '随机测试报告'
+            }
+          },
+          {
+            path: 'pertest',
+            name: 'PerTest',
+            component: () => import('@/pages/autotest/PerTest.vue'),
+            meta: {
+              active: 'pertest',
+              breadTextOne: 'APP性能测试',
+              breadTextTwo: '性能测试'
+            }
+          },
+          {
+            path: 'perReport',
+            name: 'PerReport',
+            component: () => import('@/pages/autotest/PerReport.vue'),
+            meta: {
+              active: 'perReport',
+              breadTextOne: 'APP性能测试',
+              breadTextTwo: '性能测试报告'
+            }
+          },
+          {
+            path: 'chart',
+            name: 'AutoChart',
+            component: () => import('@/pages/autotest/AutoChart.vue'),
+            meta: {
+              active: 'chart',
+              breadTextOne: '测评数据'
             }
           }
         ]
@@ -729,6 +760,13 @@ let curRoutes = [
           active: 'tag'
         },
         children: [{
+            path: 'tag',
+            name: 'Tag',
+            component: () => import('@/pages/tagManager/Tag.vue'),
+            meta: {
+              active: 'tag'
+            }
+          },{
             path: 'staff',
             name: 'Staff',
             component: () => import('@/pages/tagManager/Staff.vue'),

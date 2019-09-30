@@ -2,7 +2,7 @@
   <div>
     <ul class="filter-field">
       <li><label>标题：</label>
-        <el-input v-model="filterData.title" placeholder="输入标题或ID关键字" clearable @keyup.native="getRdataChange"></el-input>
+        <el-input v-model="filterData.title" placeholder="请输入标题或ID关键字" clearable @keyup.native="getRdataChange"></el-input>
       </li>
       <li><label>状态：</label>
         <el-select v-model="filterData.status" placeholder="请选择" clearable multiple @change="getRdataChange">
@@ -63,7 +63,16 @@
           <el-option :value="3" label="低于预期"></el-option>
         </el-select>
       </li>
-
+      <li><label>标签：</label>
+        <el-select v-model="filterData.tag" placeholder="请选择"   clearable  @change="getRdataChange">
+          <el-option
+            v-for="item in tagList"
+            :key="item.id"
+            :label="item.tag"
+            :value="item.id">
+          </el-option>
+        </el-select>
+      </li>
     </ul>
     <div class="opt-bar">
       <el-button type="primary" @click="toAddFun">新增需求</el-button>
@@ -91,80 +100,12 @@
                 <p class="toDetail fixed-width-title" :title="record.title"  @click="toDetailFun(record)">{{record.title}}</p>
               </template>
           </a-table-column>
-          <a-table-column
-              title="类型"
-              width="100px"
-              dataIndex="requirement_type"
-              key="requirement_type">
-            <template slot-scope="text, record">
-                <span>{{rqSet.type[record.requirement_type]}}</span>
-              </template>
-          </a-table-column>
-          <a-table-column
-              title="需求价值"
-              width="100px"
-              dataIndex="worth"
-              key="worth">
-            <template slot-scope="text, record">
-                <span>{{record.worth == 1?'高价值':'非高价值'}}</span>
-              </template>
-          </a-table-column>
-          <a-table-column
-              title="高价值结果"
-              width="120px"
-              dataIndex="worth_sure"
-              key="worth_sure">
-            <template slot-scope="text, record">
-                <span>{{getWortSure(record.worth_sure)}}</span>
-              </template>
-          </a-table-column>
-          <a-table-column
-              title="创建时间"
-              width="150px"
-              dataIndex="creation_time"
-              key="creation_time">
-          </a-table-column>
-          <a-table-column
-              title="状态"
-              width="120px"
-              dataIndex="board_status"
-              key="board_status">
-            <template slot-scope="text, record">
-                <el-dropdown trigger="click" class='issue-edit-dropdown'>
-                    <span class="el-dropdown-link">
-                      <span>{{rqSet.status[record.board_status]}}</span><i class="el-icon-arrow-down el-icon--right"></i>
-                    </span>
-                  <el-dropdown-menu slot="dropdown" class="issue-edit-dropdow-wrap">
-                    <div class="requirement-down-wrap">
-                      <ul>
-                        <el-dropdown-item v-for="(val,key) in rqSet.status" :key="key"
-                                          :class="{selected:record.board_status ==key}">
-                          <div @click="updateStatus(record,key)">
-                            {{val}}
-                          </div>
-                        </el-dropdown-item>
-                      </ul>
-                    </div>
-                  </el-dropdown-menu>
-                </el-dropdown>
-              </template>
-          </a-table-column>
-          <a-table-column
-              title="优先级"
-              width="120px"
-              dataIndex="priority"
-              key="priority">
-            <template slot-scope="text, record">
-                <span>{{rqSet.priority[record.priority]}}</span>
-              </template>
-          </a-table-column><a-table-column
+      <a-table-column
               title="创建人"
-              width="150px"
               dataIndex="creator_name"
               key="creator_name">
           </a-table-column><a-table-column
               title="处理人"
-              width="150px"
               dataIndex="handler"
               key="handler">
             <template slot-scope="text, record">
@@ -192,9 +133,70 @@
               </el-dropdown>
               </template>
           </a-table-column>
+                <a-table-column
+              title="状态"
+              dataIndex="board_status"
+              key="board_status">
+            <template slot-scope="text, record">
+                <el-dropdown trigger="click" class='issue-edit-dropdown'>
+                    <span class="el-dropdown-link">
+                      <span>{{rqSet.status[record.board_status]}}</span><i class="el-icon-arrow-down el-icon--right"></i>
+                    </span>
+                  <el-dropdown-menu slot="dropdown" class="issue-edit-dropdow-wrap">
+                    <div class="requirement-down-wrap">
+                      <ul>
+                        <el-dropdown-item v-for="(val,key) in rqSet.status" :key="key"
+                                          :class="{selected:record.board_status ==key}">
+                          <div @click="updateStatus(record,key)">
+                            {{val}}
+                          </div>
+                        </el-dropdown-item>
+                      </ul>
+                    </div>
+                  </el-dropdown-menu>
+                </el-dropdown>
+              </template>
+          </a-table-column>
+          <a-table-column
+              title="优先级"
+              dataIndex="priority"
+              key="priority">
+            <template slot-scope="text, record">
+                <span>{{rqSet.priority[record.priority]}}</span>
+              </template>
+          </a-table-column>
+
+          <a-table-column
+              title="类型"
+              dataIndex="requirement_type"
+              key="requirement_type">
+            <template slot-scope="text, record">
+                <span>{{rqSet.type[record.requirement_type]}}</span>
+              </template>
+          </a-table-column>
+          <a-table-column
+              title="需求价值"
+              dataIndex="worth"
+              key="worth">
+            <template slot-scope="text, record">
+                <span>{{record.worth == 1?'高价值':'非高价值'}}</span>
+              </template>
+          </a-table-column>
+          <a-table-column
+              title="高价值结果"
+              dataIndex="worth_sure"
+              key="worth_sure">
+            <template slot-scope="text, record">
+                <span>{{getWortSure(record.worth_sure)}}</span>
+              </template>
+          </a-table-column>
+          <a-table-column
+              title="创建时间"
+              dataIndex="creation_time"
+              key="creation_time">
+          </a-table-column>
           <a-table-column
               title="评审状态"
-              width="120px"
               dataIndex="review_status"
               key="review_status">
             <template slot-scope="text, record">
@@ -209,7 +211,7 @@
               </template>
           </a-table-column>
     </a-table>
-    <requirementDetail v-model="requirementDrawer" :requireData="requirementDetail" :drawerStyle="drawerStyle"
+    <requirementDetail v-model="requirementDrawer" :requireData="requirementDetail" :drawerStyle="drawerStyle" :tagList="tagList"
                        @data-change="detailchange" @data-delete="requirementDelete" @refresh-list="refreshFun"></requirementDetail>
   </div>
 </template>
@@ -219,6 +221,7 @@
   import versionApi from '@/api/version'
   import requirementDetail from '@/pages/requirement/requirementDetail'
   import setApi from '@/api/settingType.js'
+  import tagApi from '@/api/tag.js'
   export default {
     data() {
       return {
@@ -262,8 +265,10 @@
           priority: [],
           review_status: '',
           worth:'',
-          worth_sure:''
+          worth_sure:'',
+          tag:''
         },
+        tagList:[]
       }
     },
     components: {
@@ -427,6 +432,7 @@
         params.handler_id = this.filterData.handler.toString()
         params.board_status = this.filterData.status.toString()
         params.priority = this.filterData.priority.toString()
+        params.tag = this.filterData.tag
 
         params.review_status = this.filterData.review_status
         params.worth = this.filterData.worth
@@ -542,14 +548,26 @@
       requirementDelete() {
         this.refreshFun()
       },
+      getTagList() {
+        let params = {
+          project_id: this.projectId
+        }
+        tagApi.getTag(params).then(res => {
+          this.tagList = res.data.data
+        },error=>{
+          this.$message.error(error.message)
+        })
+      },
     },
     created() {
+      this.getTagList()
       this.getRdata({page_size:this.pagination.pageSize,page_index:this.pagination.current})
     }
   }
 </script>
 <style lang="scss">
   .filter-field {
+
     .el-select {
       span:focus-within {
         border: none;
@@ -569,7 +587,7 @@
     align-items: center;
     justify-content: flex-start;
     flex-wrap: wrap;
-    margin: 10px 0 10px;
+    margin: 0 0 10px;
 
     li {
       margin-left: 8px;

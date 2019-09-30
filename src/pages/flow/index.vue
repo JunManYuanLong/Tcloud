@@ -135,9 +135,9 @@ export default {
     box-shadow: rgba(0, 0, 0, 0.05) 1px 0px 10px 0px;
   }
   .flow-content {
-    padding: 15px 20px 0 20px;
+    padding: 20px 20px 0 20px;
     .breadCrumb {
-      margin-bottom: 15px;
+      margin-bottom: 20px;
     }
   }
   .flow-content {

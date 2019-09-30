@@ -3,12 +3,16 @@
       <div class="modules-wrap">
         <h2>用例库</h2>
         <el-input
-          placeholder="搜索module"
+          placeholder="搜索模块"
           v-model="searchModule" class="m-search" clearable>
           <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
         <div class="m-title" :class="{allActive:moduleId == 'all'}" @click="toAllCases">
-          <div class="des"><img src="../../assets/img/modules.png" alt=""><span>全部用例（{{caseTotal}}）</span></div>
+          <el-tooltip class="item" effect="dark" content="点击查看所有用例" placement="top">
+            <div class="des"><img src="../../assets/img/modules.png" alt="">
+              <span>全部用例（{{caseTotal}}）</span>
+            </div>
+          </el-tooltip>
           <div class="opts" title="添加模块" @click="addModuleFun"><i class="el-icon-circle-plus"></i></div>
         </div>
         <ul class="module-tree">
@@ -361,7 +365,7 @@ import caseApi from '@/api/case.js'
         color: #926dec;
         margin-left:10px;
       }
-      
+
     }
     .opts{
       i{

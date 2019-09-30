@@ -104,6 +104,16 @@
             {{addData.case_ids && addData.case_ids.length > 0 ? '继续选择' : '请选择'}}
           </el-button>
     </el-form-item>
+    <el-form-item label="标签：" prop="tag">
+      <el-select v-model="addData.tag" placeholder="请选择" multiple  clearable>
+        <el-option
+        v-for="item in tagList"
+        :key="item.id"
+        :label="item.tag"
+        :value="item.id">
+      </el-option>
+      </el-select>
+    </el-form-item>
     <el-form-item label="需求描述：" prop="description">
       <editor v-model="addData.description"></editor>
     </el-form-item>
@@ -126,6 +136,7 @@
 </template>
 <script>
   import userApi from '@/api/user.js'
+  import tagApi from '@/api/tag.js'
   import versionApi from '@/api/version'
   import editor from '@/components/editor'
   import imageUpload from '@/pages/requirement/imageUpload'
@@ -155,8 +166,10 @@
           "description": "",
           "requirement_type": "",
           "case_ids":[],
-          "expect_time":""
+          "expect_time":"",
+          "tag":[]
         },
+        tagList:[],
         createCaseDialogVisible:false,
         rules: {
           title: [
@@ -232,6 +245,7 @@
             if(this.addData.report_time!==''){
               params.report_time = this.addData.report_time.toString()
             }
+            params.tag = this.addData.tag.toString()
             params.attach = JSON.stringify(this.uploadFile)
             params = dealObjectValue(params)
             let version = this.$route.params.requirementClassId
@@ -263,6 +277,16 @@
         this.addData.case_ids = val
         this.isShowCaseDialog(false)
       },
+      getTagList() {
+        let params = {
+          project_id: this.projectId
+        }
+        tagApi.getTag(params).then(res => {
+          this.tagList = res.data.data
+        },error=>{
+          this.$message.error(error.message)
+        })
+      },
     },
     created() {
       // 判断是否显示版本下拉框
@@ -272,6 +296,7 @@
       } else {
         this.showVersion = false
       }
+      this.getTagList()
     }
   }
 

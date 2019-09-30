@@ -63,5 +63,5 @@ export default {
       url: `${urlPrefix}public/case/`,
       params: params
     })
-  },
+  }
 }

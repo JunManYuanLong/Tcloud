@@ -125,6 +125,16 @@
                       </el-option>
                     </el-select>
                 </el-form-item>
+                <el-form-item label="标签：" prop="tag">
+                  <el-select v-model="addData.tag" placeholder="请选择" multiple  clearable>
+                    <el-option
+                    v-for="item in tagList"
+                    :key="item.id"
+                    :label="item.tag"
+                    :value="item.id">
+                  </el-option>
+                  </el-select>
+                </el-form-item>
             <el-form-item label="描述：" prop="description"  class="blockItem">
               <editor v-if="dialogVisible" v-model="addData.description"></editor>
             </el-form-item>
@@ -162,7 +172,21 @@ import fileUpload from '@/pages/requirement/fileUpload'
 import {generateUUID, getSuffix} from '@/utils/util.js'
   export default{
     name:'issueDialog',
-    props:['issueId','isShow'],
+    // props:['issueId','isShow'],
+    props:{
+      issueId:{
+        type:[Number,String]
+      },
+      isShow:{
+        type:Boolean
+      },
+      tagList:{
+        type:Array,
+        default() {
+          return []
+        }
+      }
+    },
     data() {
       return {
         dialogVisible: this.isShow,
@@ -299,6 +323,7 @@ import {generateUUID, getSuffix} from '@/utils/util.js'
             if(this.version!== 'all'){
               params.version = parseInt(this.version)
             }
+            params.tag = this.addData.tag.toString()
             params.creator = this.userId
             params.modifier = this.userId
             params = dealObjectValue(params)

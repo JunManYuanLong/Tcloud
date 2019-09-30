@@ -697,23 +697,13 @@ export default {
         });
       }
     },
-    //      cancelFun(){
-    //        this.$router.go(-1);//返回上一层
-    //      },
-    async gettoken() {
-      let token = await axios.get(
-        "http://xxxxxxxx",
-        { params: { name: this.$store.getters.userName } }
-      );
-      return token;
-    },
     toStfPage() {
       tcdevicesApi.getTcToken({ name: this.$store.getters.userName }).then(
         res => {
           this.token = res.data.data.token;
           console.info(res.data.data);
           console.log("跳转到STF");
-          this.stfurl = `http://stf.ywopt.com?jwt=${this.token}`;
+          this.stfurl = `${process.env.STF_URL}?jwt=${this.token}`;
           console.log(this.stfurl);
         },
         error => {

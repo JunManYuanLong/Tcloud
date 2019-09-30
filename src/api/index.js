@@ -30,7 +30,6 @@ instance.cancel = axios.cancel
 
 instance.interceptors.request.use(
   config => {
-    console.log(config)
     /* let exp = store.state.login.exp || 0
     if (exp > 0) {
       if (0 < moment.unix(exp).diff(moment().utc(), 'days',true) && moment.unix(exp).diff(moment().utc(), 'days',true) < 1 ) {

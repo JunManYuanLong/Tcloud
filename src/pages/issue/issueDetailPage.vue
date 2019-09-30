@@ -136,11 +136,11 @@
         <el-select
             v-model="editData.case_covered"
             placeholder="请选择是否覆盖">
-            <el-option  
+            <el-option
               label="未覆盖"
               :value="0">
             </el-option>
-            <el-option  
+            <el-option
               label="已覆盖"
               :value="1">
             </el-option>
@@ -154,6 +154,16 @@
             :label="item.title"
             :value="item.id">
           </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="标签：" prop="tag" class="blockItem">
+        <el-select v-model="editData.tag" placeholder="请选择" multiple  clearable style="width:80%">
+          <el-option
+          v-for="item in tagList"
+          :key="item.id"
+          :label="item.tag"
+          :value="item.id">
+        </el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="描述：" prop="description" class="blockItem">
@@ -225,6 +235,7 @@
 <script>
 import editor from "@/components/editor";
 import issueApi from "@/api/issue.js";
+import tagApi from "@/api/tag.js";
 import projectApi from "@/api/project.js";
 import moduleApi from "@/api/module.js";
 import userApi from "@/api/user.js";
@@ -266,7 +277,8 @@ export default {
         detection_chance: "",
         requirement_id: "",
         requirement: "",
-        case_covered:''
+        case_covered:'',
+        tag:[]
       },
       showEditRq: false,
       rqLoading: false,
@@ -305,7 +317,8 @@ export default {
         text: ""
       },
       editDataChange: false,
-      changeCount: 0
+      changeCount: 0,
+      tagList:[]
     };
   },
   computed: {
@@ -388,6 +401,7 @@ export default {
           params.module_id = this.module_id;
           params.project_id = parseInt(this.projectId);
           params.attach = JSON.stringify(this.uploadFile);
+          params.tag = this.editData.tag.toString()
           if (this.editData.requirement) {
             //绑定需求有修改的情况
             params.requirement_id = this.editData.requirement;
@@ -507,7 +521,8 @@ export default {
           description: detailData.description,
           detection_chance: detailData.detection_chance,
           requirement_id: detailData.requirement_id,
-          requirement_title: detailData.requirement_title
+          requirement_title: detailData.requirement_title,
+          tag:detailData.tag?detailData.tag.split(',').map(Number):[],
         };
         let upload =
           detailData.attach != ""
@@ -587,13 +602,24 @@ export default {
         this.rqLoading = false;
         this.requirements = [];
       }
-    }
+    },
+    getTagList() {
+      let params = {
+        project_id: this.projectId
+      }
+      tagApi.getTag(params).then(res => {
+        this.tagList = res.data.data
+      },error=>{
+        this.$message.error(error.message)
+      })
+    },
   },
   created() {
     this.getModuleList();
     this.getEditData(); //获取单个issue
     this.getProjectDetail();
     this.getIssueLog();
+    this.getTagList()
   },
   mounted() {
     let _this = this;

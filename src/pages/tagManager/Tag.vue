@@ -3,57 +3,28 @@
     <!--头部搜索-->
     <el-row>
       <el-col :span="24">
-        <el-form ref="form" label-width="80px" :inline="true">
-          <el-form-item label="标签名称">
-            <el-input placeholder="请输入标签名" v-model="searchText" clearable></el-input>
-          </el-form-item>
-          <el-form-item label="类型">
-            <el-select v-model="tag_type" clearable placeholder="请选择">
-              <el-option
-                v-for="item in typeList"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item style="margin-left: 30px">
-            <el-button type="primary" @click="createTagDialogVisible = true">新增标签</el-button>
-          </el-form-item>
-        </el-form>
+        <el-button type="primary" @click="createTagDialogVisible = true">新增标签</el-button>
       </el-col>
     </el-row>
     <!--列表区域-->
-    <el-card class="card" shadow="never">
-      <el-table
-        :data="tableData"
-        style="width: 100%">
-        <el-table-column
-          prop="date"
-          label="日期"
-          width="180">
-        </el-table-column>
-        <el-table-column
-          prop="name"
-          label="姓名"
-          width="180">
-        </el-table-column>
-        <el-table-column
-          prop="address"
-          label="地址">
-        </el-table-column>
-      </el-table>
-      <!--分页-->
-      <div class="pagination">
-        <el-pagination
-          @current-change="handleCurrentChange"
-          :current-page.sync="currentPage"
-          :page-size="pageSize"
-          layout="total, prev, pager, next"
-          :total="total">
-        </el-pagination>
-      </div>
-    </el-card>
+      <a-table
+        :rowKey="record => record.id"
+        :dataSource="tagData"
+        :loading="loading"
+      >
+        <a-table-column title="ID" data-index="id" width="90px" key="id"></a-table-column>
+        <a-table-column title="标签名" data-index="tag" key="tag"></a-table-column>
+        <a-table-column title="被引用数" data-index="reference_nums" key="reference_nums"></a-table-column>
+        <a-table-column title="描述" data-index="description" key="description"></a-table-column>
+        <a-table-column title="操作" width="90px"  key="action">
+          <template slot-scope="text, record">
+            <el-button
+              type="danger"
+              @click="deleteTag(record)"
+            >删除</el-button>
+          </template>
+        </a-table-column>
+      </a-table>
     <!--新增标签-->
     <el-dialog
       title="新增标签"
@@ -61,8 +32,8 @@
       @close="closeCreateTagDialog"
       width="480px" :close-on-click-modal="false">
       <el-form label-width="80px" :model="createTagForm" :rules="rules" ref="createTagForm">
-        <el-form-item label="标签名称" prop="title">
-          <el-input v-model.trim="createTagForm.title" style="width: 350px"></el-input>
+        <el-form-item label="标签名称" prop="tag">
+          <el-input v-model.trim="createTagForm.tag" style="width: 350px"></el-input>
         </el-form-item>
         <el-form-item label="描述" prop="description">
           <el-input v-model.trim="createTagForm.description" style="width: 350px"></el-input>
@@ -83,6 +54,7 @@
     name: "Tag",
     data () {
       return {
+        loading:true,
         searchText: '',
         tag_type: '',
         typeList: [
@@ -99,24 +71,18 @@
             value: 'bug'
           }
         ],
-        tableData: [{
-          tag: '2016-05-02',
-          description: '',
-          tagType: '',
-          id: ''
-        }],
+        tagData:[],
         currentPage: 1,
         total: 100,
         pageSize: 10,
         createTagDialogVisible: false,  // 新增tag对话框可见
         createTagForm: { // 新增tag的数据
-          title: '',
+          tag: '',
           description: '',
-          tag_type: ''
         },
         rules: {
-          title: [
-            {required: true, message: '请输入标签', trigger: 'blur'}
+          tag: [
+            {required: true, message: '请输入标签名称', trigger: 'blur'}
           ]
         },
       }
@@ -132,15 +98,14 @@
       */
       getTagList() {
         let params = {
-          tag: this.searchText,
-          tag_type: this.tag_type,
-          project_id: this.projectId,
-          page_size: this.pageSize,
-          page_num: this.currentPage
+          project_id: this.projectId / 1
         }
         tagApi.getTag(params).then(res => {
           this.tagData = res.data.data
+          this.loading = false
           console.log(this.tagData)
+        },error=>{
+          this.$message.error(error.message)
         })
       },
       /*
@@ -155,8 +120,8 @@
       */
       closeCreateTagDialog() {
         this.createTagDialogVisible = false
-        this.createVersionForm.title = ''
-        this.createVersionForm.description = ''
+        // this.createVersionForm.title = ''
+        // this.createVersionForm.description = ''
       },
       /*
         新增tag
@@ -165,10 +130,9 @@
         this.$refs.createTagForm.validate(valid => {
           if (valid) {
             tagApi.addTag({
-              tag: this.createTagForm.title,
-              project_id: this.projectId,
-              description: this.createTagForm.description,
-              tag_type: 'task'
+              tag: this.createTagForm.tag,
+              project_id: this.projectId / 1,
+              description: this.createTagForm.description
             }).then(res => {
               this.$message.success('添加标签成功')
               this.closeCreateTagDialog()
@@ -179,6 +143,21 @@
             })
           }
         })
+      },
+      deleteTag(row){
+        console.log(row)
+         this.$confirm(`您确定要删除标签：${row.id}？`, "提示", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning"
+          }).then(() => {
+            tagApi.delTag(row.id).then(res=>{
+              this.$message.success('删除成功！')
+              this.getTagList()
+            },error=>{
+              this.$message.error(error.message)
+            })
+          })
       }
     },
     created () {
@@ -203,5 +182,8 @@
         justify-content: center;
       }
     }
+  }
+  .ant-table-wrapper{
+    margin-top: 10px;
   }
 </style>

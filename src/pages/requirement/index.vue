@@ -309,8 +309,7 @@ import moment from 'moment'
       margin-left:0;
     }
     .rq-crumb{
-      min-height:55px;
-      line-height:55px;
+      padding:20px 0;
       font-size:14px;
       .title_name span{
         color:#000;

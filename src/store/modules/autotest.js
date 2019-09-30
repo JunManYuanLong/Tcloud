@@ -3,9 +3,11 @@ export default {
     selectApk: {}, // 选中的apk
     selectPhoneList: [], // 选中的手机列表
     runTime: 240,
+    perRunTime: 60,
     isInstallApp: true,
     jumpLogin: false,
-    testType: 1
+    testType: 1,
+    testConfig: 'qjp_ui/config.json'
   },
   getters: {
     getIsInstallApp(state) {
@@ -25,6 +27,9 @@ export default {
     setRunTime(state, data) {
       state.runTime = data
     },
+    setPerRunTime(state, data) {
+      state.perRunTime = data
+    },
     setIsInstallApp(state, data) {
       state.isInstallApp = data
     },
@@ -33,6 +38,9 @@ export default {
     },
     setTestType(state, data) {
       state.testType = data
+    },
+    setTestConfig (state, data) {
+      state.testConfig = data
     }
   },
   actions: {
