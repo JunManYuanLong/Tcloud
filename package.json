@@ -8,7 +8,9 @@
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
     "build": "node build/build.js",
-    "test": "node build/build-test.js"
+    "test": "node build/build-test.js",
+    "buildTest": "node build/build-test.js &&  node uploadOss.js test",
+    "buildPro": "node build/build.js && node uploadOss.js build"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-autoformat": "11.0.1",
@@ -36,7 +38,6 @@
     "less-loader": "^5.0.0",
     "moment": "^2.23.0",
     "particles.js": "^2.0.0",
-    "postcss": "^7.0.18",
     "qs": "^6.7.0",
     "quill-image-drop-module": "^1.0.3",
     "v-charts": "^1.19.0",
@@ -47,6 +48,7 @@
     "vue-codemirror": "^4.0.6",
     "vue-cookies": "^1.5.8",
     "vue-infinite-loading": "^2.4.4",
+    "vue-infinite-scroll": "^2.0.2",
     "vue-phoenix": "^2.4.8",
     "vue-quill-editor": "^3.0.6",
     "vue-router": "^3.0.1",
