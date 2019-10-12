@@ -63,7 +63,7 @@
           >清除</el-button
         >
         <a
-          href="http://km.innotechx.com/pages/viewpage.action?pageId=69737663"
+          href="http://www.baidu.com"
           target="_blank"
           class="help"
         >
