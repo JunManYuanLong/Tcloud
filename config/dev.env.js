@@ -5,7 +5,7 @@ const prodEnv = require('./prod.env')
 module.exports = merge(prodEnv, {
   NODE_ENV: '"development"',
   // 接口地址配置
-  BASE_URL: '"http://xxxxx"',
+  BASE_URL: '"http://localhost:9000"',
   //ws 服务的地址配置
   WS_BASE_URL:'"ws://xxxx"',
   //cookie 的过期时间
