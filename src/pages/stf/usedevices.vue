@@ -245,7 +245,7 @@ export default {
     },
     phonePassword() {
       window.open(
-        "http://km.innotechx.com/pages/viewpage.action?pageId=68127812",
+        "http://www.baidu.com",
         "_blank"
       );
       //          this.$confirm('确定要查看密码吗?', '提示', {
@@ -260,7 +260,7 @@ export default {
     },
     instruction() {
       window.open(
-        "http://km.innotechx.com/pages/viewpage.action?pageId=68127812",
+        "http://www.baidu.com",
         "_blank"
       );
     },
