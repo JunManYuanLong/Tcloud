@@ -29,4 +29,7 @@ npm run dev
 
 ```
 
+## LICENSE
+See [LICENSE](https://github.com/bigbaser/Tcloud/blob/master/LICENSE)
+
 
