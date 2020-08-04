@@ -4,10 +4,11 @@
 
 
 ## 后端传送门：
-https://github.com/bigbaser/TcloudServer
+https://github.com/JunManYuanLong/TcloudServer
 
-## demo地址：
+## demo地址(调试中，暂不可用)：
 http://tcloud-demo.innotechx.com/#/login （账号：admin 密码：123456）
+
 
 ## 接口配置：
 1、启动后端服务<br>
@@ -30,6 +31,6 @@ npm run dev
 ```
 
 ## LICENSE
-See [LICENSE](https://github.com/bigbaser/Tcloud/blob/master/LICENSE)
+See [LICENSE](https://github.com/JunManYuanLong/Tcloud/blob/master/LICENSE)
 
 
